@@ -50,6 +50,25 @@ void BandMatrixTest::testNonOptimal()
     });
 }
 
+void BandMatrixTest::testRealExample()
+{
+    testBandMatrix({
+        {2, 1, 0, 1, 0, 0},
+        {1, 6, 1, 2, 2, 0},
+        {0, 1, 2, 0, 1, 0},
+        {1, 2, 0, 6, 2, 1},
+        {0, 2, 1, 2, 6, 1},
+        {0, 0, 0, 1, 1, 2},
+    }, {
+        {2, 1, 0, 1},
+        {6, 1, 2, 2},
+        {2, 0, 1, 0},
+        {6, 2, 1, 0},
+        {6, 1, 0, 0},
+        {2, 0, 0, 0},
+    });
+}
+
 void BandMatrixTest::testBandMatrix(const Matrix& input, const Matrix& expected)
 {
     const Matrix actual = buildBandMatrix(input);
