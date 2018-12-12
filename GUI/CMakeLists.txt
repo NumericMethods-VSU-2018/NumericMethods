@@ -37,3 +37,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${OPENGL_INCLUDE_DIRS}
 )
+
+configure_file(test.txt test.txt COPYONLY)
+configure_file(vert.glsl vert.glsl COPYONLY)
+configure_file(frag.glsl frag.glsl COPYONLY)
