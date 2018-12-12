@@ -133,13 +133,13 @@ void OpenGLWidget::drawOverlay()
             if (colInd < xoffsets.size() - 1) {
                 const QVector2D rightPos(origin.x() + xoffsets[colInd + 1], origin.y() + yoffsets[rowInd]);
                 const QPoint screenRightPos = m_camera->worldToScreen(rightPos);
-                minDist = qMin(minDist, screenRightPos.x() - screenCurPos.x());
+                minDist = qAbs(qMin(minDist, screenRightPos.x() - screenCurPos.x()));
             }
 
             if (rowInd < yoffsets.size() - 1) {
                 const QVector2D botPos(origin.x() + xoffsets[colInd], origin.y() + yoffsets[rowInd + 1]);
                 const QPoint screenBotPos = m_camera->worldToScreen(botPos);
-                minDist = qMin(minDist, screenBotPos.y() - screenCurPos.y());
+                minDist = qAbs(qMin(minDist, screenBotPos.y() - screenCurPos.y()));
             }
 
         }
@@ -154,7 +154,11 @@ void OpenGLWidget::drawOverlay()
     for (int i = 0; i < positions.size(); i++){
         const QPoint screenPos = m_camera->worldToScreen(positions[i]);
         const QString strWorldPos = "(" + QString::number(positions[i].x()) + ", " + QString::number(positions[i].y()) + ")";
-        painter.drawText(screenPos + QPoint(3, -3), strWorldPos);
+        const QString strTemperature = " t = " + QString::number(m_solver->temperatures()[i]) + " K";
+        const QString strCoefK = "K(x, y) = (" + QString::number(m_solver->coefX()[i]) + ", " + QString::number(m_solver->coefY()[i]) + ")";
+        painter.drawText(screenPos + QPoint(3, -6 - 2 * fontSize), strWorldPos);
+        painter.drawText(screenPos + QPoint(3, -6 - fontSize), strTemperature);
+        painter.drawText(screenPos + QPoint(3, -6), strCoefK);
     }
 }
 

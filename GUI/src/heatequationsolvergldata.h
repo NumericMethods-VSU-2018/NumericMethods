@@ -20,14 +20,14 @@ public:
     HeatEquationSolverGLData(const QVector<float> &xoffsets,
                                 const QVector<float> &yoffsets,
                                 const QVector2D &origin,
-                                const QVector<QVector<float>> temperatures, MeshPattern pattern);
+                                const QVector<float> temperatures, MeshPattern pattern);
     ~HeatEquationSolverGLData();
 
     BoundingBox boundingBox() const;
     void updatePositions(const QVector<float> &xoffsets,
                            const QVector<float> &yoffsets,
                            const QVector2D &origin);
-    void updateColors(const QVector<QVector<float>> temperatures);
+    void updateColors(const QVector<float> &temperatures);
 
     void drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
     void drawWireframe(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);

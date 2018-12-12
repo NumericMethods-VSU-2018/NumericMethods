@@ -10,9 +10,9 @@
 HeatEquationSolverGLData::HeatEquationSolverGLData(const QVector<float> &xoffsets,
                                                      const QVector<float> &yoffsets,
                                                      const QVector2D &origin,
-                                                     const QVector<QVector<float> > temperatures, MeshPattern pattern)
+                                                     const QVector<float> temperatures, MeshPattern pattern)
     : m_rowCount(yoffsets.size()), m_colCount(xoffsets.size()), m_pattern(pattern), m_positionsVBO(nullptr), m_colorsVBO(nullptr), m_ebo(nullptr) {
-    Q_ASSERT(m_rowCount * m_colCount == temperatures.size() * temperatures[0].size());
+    Q_ASSERT(m_rowCount * m_colCount == temperatures.size());
     buildShaders();
 
     updatePositions(xoffsets, yoffsets, origin);
@@ -83,24 +83,22 @@ void HeatEquationSolverGLData::updatePositions(const QVector<float> &xoffsets, c
     m_bbox = BoundingBox(m_positions);
 }
 
-void HeatEquationSolverGLData::updateColors(const QVector<QVector<float> > temperatures) {
-    int colorCount = temperatures.size() * temperatures[0].size();
+void HeatEquationSolverGLData::updateColors(const QVector<float> &temperatures) {
+    int colorCount = temperatures.size();
     if (colorCount != m_colors.size())
         m_colors.resize(colorCount);
 
     QRandomGenerator gen(QDateTime::currentMSecsSinceEpoch());
-    for (int rowInd = 0; rowInd < temperatures.size(); rowInd++) {
-        for (int colInd = 0; colInd < temperatures[0].size(); colInd++) {
-            // pretty temperature to color conversion func
-            float temperature = 1.0f;//temperatures[rowInd][colInd];
-           // const QVector3D color(temperature, temperature, temperature);
-            float t = gen.generate() / (float) std::numeric_limits<quint32>::max();
+    for (int vertInd = 0; vertInd < temperatures.size(); vertInd++) {
+        // pretty temperature to color conversion func
+        float temperature = 1.0f;//temperatures[rowInd][colInd];
+       // const QVector3D color(temperature, temperature, temperature);
+        float t = gen.generate() / (float) std::numeric_limits<quint32>::max();
 //            const QVector3D color(gen.generate() / (float) std::numeric_limits<quint32>::max(),
 //                                gen.generate() / (float) std::numeric_limits<quint32>::max(),
 //                                  gen.generate() / (float) std::numeric_limits<quint32>::max());
-            const QVector3D color(t, 0, 1 - t);
-            m_colors[rowInd * temperatures[0].size() + colInd] = color;
-        }
+        const QVector3D color(t, 0, 1 - t);
+        m_colors[vertInd] = color;
     }
 }
 
