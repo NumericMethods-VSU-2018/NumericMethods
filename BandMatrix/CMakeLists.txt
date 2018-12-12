@@ -8,6 +8,8 @@ add_library(${PROJECT_NAME}
     SHARED
     include/BandMatrix.h
     src/BandMatrix.cpp
+    include/ReorderMatrix.h
+    src/ReorderMatrix.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
@@ -16,6 +18,8 @@ add_executable(${PROJECT_NAME}_app
     test/main.cpp
     test/BandMatrixTest.cpp
     test/BandMatrixTest.h
+    test/ReorderTest.cpp
+    test/ReorderTest.h
 )
 
 find_package(cppunit)
