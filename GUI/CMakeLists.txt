@@ -6,20 +6,19 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 add_executable(${PROJECT_NAME}
-    main.cpp
-    mainwindow.cpp
-    openglwidget.cpp
-    heatequationsolver.cpp
-    camera.cpp
-    heatequationsolvergldata.cpp
-    boundingbox.cpp
-    mainwindow.h
-    openglwidget.h
-    heatequationsolver.h
-    camera.h
-    heatequationsolvergldata.h
-    boundingbox.h
-
+    src/main.cpp
+    src/mainwindow.cpp
+    src/mainwindow.h
+    src/openglwidget.cpp
+    src/openglwidget.h
+    src/heatequationsolver.cpp
+    src/heatequationsolver.h
+    src/camera.cpp
+    src/camera.h
+    src/heatequationsolvergldata.cpp
+    src/heatequationsolvergldata.h
+    src/boundingbox.cpp
+    src/boundingbox.h
 )
 
 find_package(OpenGL REQUIRED)
@@ -38,6 +37,6 @@ target_include_directories(${PROJECT_NAME}
     ${OPENGL_INCLUDE_DIRS}
 )
 
-configure_file(test.txt test.txt COPYONLY)
-configure_file(vert.glsl vert.glsl COPYONLY)
-configure_file(frag.glsl frag.glsl COPYONLY)
+configure_file(res/test.txt test.txt COPYONLY)
+configure_file(res/vert.glsl vert.glsl COPYONLY)
+configure_file(res/frag.glsl frag.glsl COPYONLY)
