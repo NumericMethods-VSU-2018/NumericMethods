@@ -12,6 +12,8 @@ add_library(${PROJECT_NAME}
     src/ReorderMatrix.cpp
 )
 
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_generic_lambdas)
+
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 add_executable(${PROJECT_NAME}_app

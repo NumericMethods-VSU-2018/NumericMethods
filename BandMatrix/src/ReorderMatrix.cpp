@@ -29,19 +29,18 @@ static Waves buildWaves(const Matrix& m, size_t startNode)
 {
     const size_t totalNodes = m.size();
     std::vector<std::set<size_t>> waves = { { startNode } };
-    size_t waveNum = 0;
     std::queue<WaveElement> queue;
-    queue.push({ startNode, waveNum }); // start with node 0, wave 0
+    queue.push({ startNode, 0 }); // start with wave 0
 
     while (not queue.empty()) {
-        auto elem = queue.front();
+        const auto elem = queue.front();
         queue.pop();
 
-        size_t waveNum = elem.waveNum + 1;
+        const size_t waveNum = elem.waveNum + 1;
         waves.resize(waveNum + 1);
 
         for (size_t i = 0; i < totalNodes; i++) {
-            auto value = m[elem.node][i];
+            const auto value = m[elem.node][i];
             if (value != 0 && !alreadyVisited(waves, i)) {
                 waves[waveNum].insert(i);
                 queue.push({i, waveNum});
@@ -75,14 +74,8 @@ static size_t getStartNode(const Matrix& m)
 
 static size_t countNeighbors(const Matrix& m, size_t node)
 {
-    size_t count = 0;
-    for (size_t i = 0; i < m.size(); i++) {
-        if (m[node][i] != 0) {
-            count++;
-        }
-    }
-
-    return count;
+    return std::count_if(m[node].begin(), m[node].end(),
+            [](auto val) { return val != 0; });
 }
 
 struct Neighbor
@@ -103,12 +96,12 @@ static std::vector<size_t> getNeighbors(const Matrix& m, size_t node)
     }
 
     std::sort(neighbors.begin(), neighbors.end(),
-        [](const Neighbor& a, const Neighbor& b) {
+        [](const auto& a, const auto& b) {
             return a.neighborCount < b.neighborCount;
     });
 
     std::vector<size_t> res;
-    for (auto& neighbor: neighbors) {
+    for (const auto& neighbor: neighbors) {
         res.push_back(neighbor.node);
     }
 
@@ -138,10 +131,9 @@ Reorder getReorder(const Matrix& m)
     }
 
     Reorder reorder;
-    std::transform(nodes.begin(), nodes.end(),
-    std::back_inserter(reorder), [](const NodeAndNeighbors& node) {
-        return node.node;
-    });
+    for (const auto& node: nodes) {
+        reorder.push_back(node.node);
+    }
 
     return reorder;
 }
