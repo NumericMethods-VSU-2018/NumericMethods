@@ -34,7 +34,7 @@ HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
     const int vertexCount = xoffsetSize * yoffsetSize;
     m_coefX.resize(vertexCount);
     m_coefY.resize(vertexCount);
-    m_initialConditions.resize(vertexCount);
+    //m_initialConditions.resize(vertexCount);
     m_temperatures.resize(vertexCount);
 
     for (int i = 0; i < vertexCount; i++) {
@@ -42,7 +42,7 @@ HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
         const QStringList &splittedLine = line.split(' ');
         m_coefX[i] = splittedLine[0].toFloat();
         m_coefY[i] = splittedLine[1].toFloat();
-        m_initialConditions[i] = splittedLine[2].toFloat();
+        //m_initialConditions[i] = splittedLine[2].toFloat();
     }
 
     const int boundaryConditions_1_size = in.readLine().toInt();
