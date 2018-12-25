@@ -1,4 +1,4 @@
-#include <QVector>
+#include "gausssolver.h"
 
 bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result)
 {
