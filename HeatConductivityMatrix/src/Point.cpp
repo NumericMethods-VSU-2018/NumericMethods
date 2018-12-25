@@ -7,9 +7,6 @@ Point newPoint(double x, double y) {
     return point;
 }
 
-Point operator+(const Point &p1, const Point &p2) {
-    return newPoint(p1[0] + p2[0], p1[1] + p2[1]);
-}
 
 Point operator/(const Point &lhs, const double &rhs) {
     if (rhs != 0) {
