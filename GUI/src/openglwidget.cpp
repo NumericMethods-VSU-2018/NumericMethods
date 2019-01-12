@@ -36,8 +36,7 @@ void OpenGLWidget::initializeGL() {
     glEnable(GL_POLYGON_OFFSET_FILL);
 
     m_camera = new Camera();
-    QVector<float> temps(m_solver->temperatures().size());
-    temps = { -10, 40, 20, 15};
+    QVector<float> temps = m_solver->temperatures();
     m_solverGLData = new HeatEquationSolverGLData(m_solver->xoffsets(),
                                                   m_solver->yoffsets(),
                                                   m_solver->origin(),
