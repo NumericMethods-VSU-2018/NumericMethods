@@ -6,8 +6,7 @@
 
 struct InputData
 {
-    size_t Nx, Ny; // количество точек разбиения по направлению x,y
-    std::vector<CoordDiff> hx, hy; // и массивы шагов по x, y.
+    std::vector<CoordDiff> hx, hy; // массивы шагов по x, y.
 
     Coord x0, y0; // координата левого нижнего угла прямоугольной области
 

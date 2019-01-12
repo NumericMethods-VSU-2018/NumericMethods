@@ -19,7 +19,6 @@ protected:
 
 private:
     InputData testInput(const std::string& input,
-            size_t Nx, size_t Ny,
             std::vector<CoordDiff> hx,
             std::vector<CoordDiff> hy,
             Coord x0, Coord y0);

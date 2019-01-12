@@ -20,7 +20,6 @@ void ParserTest::parseInput1()
         const 45678";
 
     InputData data = testInput(input,
-            0, 0,
             {}, {},
             0.0f, 0.0f);
 
@@ -50,7 +49,6 @@ void ParserTest::parseInput2()
         quad 1 2 3 4 5";
 
     InputData data = testInput(input,
-            3, 4,
             {11.0f, 12.0f, 13.0f},
             {1.0f, 2.0f, 3.0f, 4.0f},
             88.0f, 99.0f);
@@ -73,20 +71,19 @@ void ParserTest::parseInput2()
 }
 
 InputData ParserTest::testInput(const std::string& input,
-        size_t Nx, size_t Ny,
         std::vector<CoordDiff> hx,
         std::vector<CoordDiff> hy,
         Coord x0, Coord y0)
 {
     InputData data = parseInput(input);
 
-    CPPUNIT_ASSERT_EQUAL(data.Nx, Nx);
-    CPPUNIT_ASSERT_EQUAL(data.Ny, Ny);
+    CPPUNIT_ASSERT_EQUAL(data.hx.size(), hx.size());
+    CPPUNIT_ASSERT_EQUAL(data.hy.size(), hy.size());
 
-    for (size_t i = 0; i < Nx; ++i)
+    for (size_t i = 0; i < hx.size(); ++i)
         CPPUNIT_ASSERT_EQUAL(data.hx[i], hx[i]);
 
-    for (size_t i = 0; i < Ny; ++i)
+    for (size_t i = 0; i < hy.size(); ++i)
         CPPUNIT_ASSERT_EQUAL(data.hy[i], hy[i]);
 
     CPPUNIT_ASSERT_EQUAL(data.x0, x0);

@@ -81,12 +81,13 @@ InputData parseInput(const std::string& str)
      * cond1 -- граничное условие первого рода
      */
 
+    size_t Nx, Ny;
     InputData inputData;
     std::istringstream ss(input);
-    ss >> inputData.Nx >> inputData.Ny;
+    ss >> Nx >> Ny;
 
-    readVector(inputData.Nx, inputData.hx, ss);
-    readVector(inputData.Ny, inputData.hy, ss);
+    readVector(Nx, inputData.hx, ss);
+    readVector(Ny, inputData.hy, ss);
 
     ss >> inputData.x0 >> inputData.y0;
 
