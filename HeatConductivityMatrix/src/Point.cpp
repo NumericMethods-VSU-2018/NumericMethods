@@ -1,4 +1,4 @@
-#include "../include/Point.h"
+#include "Point.h"
 #include <cassert>
 
 Point newPoint(double x, double y) {
