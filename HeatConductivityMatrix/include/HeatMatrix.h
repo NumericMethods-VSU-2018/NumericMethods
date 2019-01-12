@@ -14,8 +14,8 @@ Matrix getLocal(const Point &i,
                 const MathFunc &k_y);
 Matrix localToGlobal(const Matrix &local,
                      const int &i, const int &j,const int &k, const int& width, const int& height);
-std::pair<Matrix, Vector> getGlobalMatrixAndVector(std::vector<double> h_x,
-                                                   std::vector<double> h_y,
+std::pair<Matrix, Vector> getGlobalMatrixAndVector(std::vector<CoordDiff> h_x,
+                                                   std::vector<CoordDiff> h_y,
                                                    Point origin,
                                                    const MathFunc &k_x,
                                                    const MathFunc &k_y,

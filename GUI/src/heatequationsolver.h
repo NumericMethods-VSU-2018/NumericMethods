@@ -1,6 +1,8 @@
 #ifndef HEATEQUATIONSOLVER_H
 #define HEATEQUATIONSOLVER_H
 
+#include <common.h>
+
 #include <QString>
 #include <QVector>
 #include <QVector2D>
@@ -16,11 +18,9 @@ public:
     HeatEquationSolver(const QVector<float> &xoffsets, const QVector<float> &yoffsets, const QPointF& origin);
 
     QVector<float> temperatures() const;
-    QVector<float> xoffsets() const;
-    QVector<float> yoffsets() const;
+    QVector<CoordDiff> xoffsets() const;
+    QVector<CoordDiff> yoffsets() const;
     QVector2D origin() const;
-    QVector<float> coefX() const;
-    QVector<float> coefY() const;
     QVector<float> initialConditions() const;
     QMap<int, float> boundaryConditions_1() const;
     QMap<QPair<int, int>, ConvectionData> boundaryConditions_3() const;
@@ -32,10 +32,8 @@ public:
 
 private:
     QVector<float> m_temperatures;
-    QVector<float> m_xoffsets;
-    QVector<float> m_yoffsets;
-    QVector<float> m_coefX;
-    QVector<float> m_coefY;
+    QVector<CoordDiff> m_xoffsets;
+    QVector<CoordDiff> m_yoffsets;
     QVector<float> m_initialConditions;
     QMap<int, float> m_boundaryConditions_1;
     QMap<QPair<int, int>, ConvectionData> m_boundaryConditions_3;
@@ -47,26 +45,15 @@ inline QVector<float> HeatEquationSolver::temperatures() const {
     return m_temperatures;
 }
 
-inline QVector<float> HeatEquationSolver::xoffsets() const {
+inline QVector<CoordDiff> HeatEquationSolver::xoffsets() const {
     return m_xoffsets;
 }
-inline QVector<float> HeatEquationSolver::yoffsets() const {
+inline QVector<CoordDiff> HeatEquationSolver::yoffsets() const {
     return m_yoffsets;
 }
 
 inline QVector2D HeatEquationSolver::origin() const {
     return m_origin;
-}
-
-
-inline QVector<float> HeatEquationSolver::coefX() const
-{
-    return m_coefX;
-}
-
-inline QVector<float> HeatEquationSolver::coefY() const
-{
-    return m_coefY;
 }
 
 inline QVector<float> HeatEquationSolver::initialConditions() const

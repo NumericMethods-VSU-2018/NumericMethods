@@ -75,6 +75,8 @@ InputData parseInput(const std::string& str)
      * XO, YO -- координата левого нижнего угла прямоугольной области
      * k_x(x,y), k_y(x,y), f(x,y) -- коэффициенты уравнения
      * phi(x,y) -- функция, задающая граничное условие.
+     *
+     * cond1 -- граничное условие первого рода
      */
 
     InputData inputData;
@@ -90,6 +92,16 @@ InputData parseInput(const std::string& str)
     inputData.k_y = readFunc(ss);
     inputData.f = readFunc(ss);
     inputData.phi = readFunc(ss);
+
+    size_t condSize;
+    ss >> condSize;
+    for (int i = 0; i < condSize; ++i)
+    {
+        int pos;
+        float val;
+        ss >> pos >> val;
+        inputData.cond1[pos] = val;
+    }
 
     return inputData;
 }

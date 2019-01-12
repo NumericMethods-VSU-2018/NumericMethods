@@ -2,6 +2,7 @@
 
 #include <common.h>
 #include <vector>
+#include <map>
 
 struct InputData
 {
@@ -12,6 +13,8 @@ struct InputData
 
     MathFunc k_x, k_y, f; // коэффициенты уравнения
     MathFunc phi; // функция, задающая граничное условие.
+
+    BoundaryCond1 cond1;
 };
 
 InputData parseInput(const std::string& input);
