@@ -9,12 +9,21 @@
 
 #include <algorithm>
 
-HeatEquationSolverGLData::HeatEquationSolverGLData(const QVector<float> &xoffsets,
-                                                     const QVector<float> &yoffsets,
-                                                     const QVector2D &origin,
-                                                     const QVector<float> temperatures, MeshPattern pattern)
-    : m_rowCount(yoffsets.size()), m_colCount(xoffsets.size()), m_pattern(pattern), m_positionsVBO(nullptr), m_colorsVBO(nullptr), m_ebo(nullptr),
-    m_maxTemperature(0), m_minTemperature(0) {
+HeatEquationSolverGLData::HeatEquationSolverGLData(
+        const QVector<float> &xoffsets,
+        const QVector<float> &yoffsets,
+        const QVector2D &origin,
+        const QVector<float> temperatures,
+        MeshPattern pattern)
+    : m_rowCount(yoffsets.size() + 1)
+    , m_colCount(xoffsets.size() + 1)
+    , m_pattern(pattern)
+    , m_positionsVBO(nullptr)
+    , m_colorsVBO(nullptr)
+    , m_ebo(nullptr)
+    , m_maxTemperature(0)
+    , m_minTemperature(0)
+{
     Q_ASSERT(m_rowCount * m_colCount == temperatures.size());
     buildShaders();
 
@@ -56,17 +65,22 @@ HeatEquationSolverGLData::~HeatEquationSolverGLData()
     delete m_ebo;
 }
 
-void HeatEquationSolverGLData::updatePositions(const QVector<float> &xoffsets, const QVector<float> &yoffsets, const QVector2D &origin) {
-    m_rowCount = yoffsets.size();
-    m_colCount = xoffsets.size();
+void HeatEquationSolverGLData::updatePositions(
+	const QVector<float> &xoffsets,
+	const QVector<float> &yoffsets,
+	const QVector2D &origin)
+{
+    QVector2D current = origin;
+    m_rowCount = yoffsets.size() + 1;
+    m_colCount = xoffsets.size() + 1;
     int newVertexCount = m_rowCount * m_colCount;
     if (newVertexCount != m_positions.size())
         m_positions.resize(newVertexCount);
 
     for (int rowInd = 0; rowInd < m_rowCount; rowInd++) {
         for (int colInd = 0; colInd < m_colCount; colInd++) {
-            const QVector2D pos(origin.x() + xoffsets[colInd], origin.y() + yoffsets[rowInd]);
             int curPosInd = rowInd * m_colCount + colInd;
+            const QVector2D pos = current;
             m_positions[curPosInd] = pos;
 
             if (rowInd < m_rowCount - 1) {
@@ -79,7 +93,13 @@ void HeatEquationSolverGLData::updatePositions(const QVector<float> &xoffsets, c
                     m_indices.push_back(curPosInd);
                 }
             }
+            if (colInd != xoffsets.size())
+                current.setX(current.x() + xoffsets[colInd]);
         }
+
+        current.setX(origin.x());
+        if (rowInd != yoffsets.size())
+            current.setY(origin.y() + yoffsets[rowInd]);
 
         m_indices.push_back(m_positions.size());
     }
