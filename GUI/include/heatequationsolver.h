@@ -8,14 +8,14 @@
 #include <QVector2D>
 #include <QMap>
 
+class InputData;
 
 class HeatEquationSolver
 {
 public:
     struct ConvectionData;
 
-    HeatEquationSolver(const QString &fileName);
-    HeatEquationSolver(const QVector<float> &xoffsets, const QVector<float> &yoffsets, const QPointF& origin);
+    HeatEquationSolver(const InputData &data);
 
     QVector<float> temperatures() const;
     QVector<CoordDiff> xoffsets() const;

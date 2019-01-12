@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 
+#include "openglwidget.h"
+#include <heatequationsolver.h>
 #include <QKeyEvent>
+#include <QOpenGLWidget>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(const HeatEquationSolver *solver, QWidget *parent)
     : QMainWindow(parent)
+    , m_heatEquationSolver{solver}
 {
-    m_heatEquationSolver = new HeatEquationSolver("test.txt");
     m_openGLWidget = new OpenGLWidget(m_heatEquationSolver, this);
     setCentralWidget(m_openGLWidget);
 }
@@ -13,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete m_openGLWidget;
-    delete m_heatEquationSolver;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)

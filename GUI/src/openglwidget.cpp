@@ -6,7 +6,7 @@
 #include <QtMath>
 #include <QOpenGLFramebufferObject>
 
-OpenGLWidget::OpenGLWidget(HeatEquationSolver *solver, QWidget *parent)
+OpenGLWidget::OpenGLWidget(const HeatEquationSolver *solver, QWidget *parent)
     : QOpenGLWidget(parent), m_solver(solver), m_isPan(false), m_isDrawOverlay(true)
 {
     QSurfaceFormat format;

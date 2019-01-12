@@ -1,25 +1,26 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "openglwidget.h"
-#include "heatequationsolver.h"
+class HeatEquationSolver;
+class OpenGLWidget;
 
 #include <QMainWindow>
-#include <QOpenGLWidget>
+
+class HeatEquationSolver;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
-private:
-    HeatEquationSolver *m_heatEquationSolver;
-    OpenGLWidget *m_openGLWidget;
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(const HeatEquationSolver *solver, QWidget *parent = 0);
     ~MainWindow();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+
+private:
+    const HeatEquationSolver *m_heatEquationSolver;
+    OpenGLWidget *m_openGLWidget;
 };
 
 #endif // MAINWINDOW_H

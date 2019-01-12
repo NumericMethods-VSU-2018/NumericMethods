@@ -11,8 +11,6 @@ add_executable(${PROJECT_NAME}
     src/mainwindow.h
     src/openglwidget.cpp
     src/openglwidget.h
-    src/heatequationsolver.cpp
-    src/heatequationsolver.h
     src/camera.cpp
     src/camera.h
     src/heatequationsolvergldata.cpp
@@ -31,10 +29,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Gui
     Qt5::OpenGL
     parser
-    BandMatrix
-    HeatConductivityMatrix
-    Gauss
-    BorderRules
+    HeatEquationSolver
 )
 
 target_include_directories(${PROJECT_NAME}

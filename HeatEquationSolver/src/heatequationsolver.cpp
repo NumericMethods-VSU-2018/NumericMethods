@@ -2,9 +2,9 @@
 
 #include <BorderRules.h>
 #include <gausssolver.h>
-#include <parser.h>
 #include <BandMatrix.h>
 #include <HeatMatrix.h>
+#include <parser.h>
 
 template<class T>
 QVector<QVector<T>> stdToQtMatrix(const std::vector<std::vector<T>>& m)
@@ -17,8 +17,7 @@ QVector<QVector<T>> stdToQtMatrix(const std::vector<std::vector<T>>& m)
     return res;
 }
 
-HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
-    const InputData data = parseFile(fileName.toStdString());
+HeatEquationSolver::HeatEquationSolver(const InputData& data) {
     const Point origin = newPoint(data.x0, data.y0);
     auto k_v = getGlobalMatrixAndVector(data.hx, data.hy,
         origin, data.k_x, data.k_y, data.f);
@@ -36,10 +35,37 @@ HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
     const bool success = solveSystem(K, V, m_temperatures);
 }
 
-HeatEquationSolver::HeatEquationSolver(const QVector<float> &xoffsets, const QVector<float> &yoffsets, const QPointF &origin)
-    : m_xoffsets(xoffsets), m_yoffsets(yoffsets), m_origin(origin) {
+QVector<float> HeatEquationSolver::temperatures() const
+{
+    return m_temperatures;
+}
 
-    QVector<float> defaultValues(xoffsets.size());
-    defaultValues.fill(0);
-    m_temperatures.fill(0, xoffsets.size() * yoffsets.size());
+QVector<CoordDiff> HeatEquationSolver::xoffsets() const
+{
+    return m_xoffsets;
+}
+
+QVector<CoordDiff> HeatEquationSolver::yoffsets() const
+{
+    return m_yoffsets;
+}
+
+QVector2D HeatEquationSolver::origin() const
+{
+    return m_origin;
+}
+
+QVector<float> HeatEquationSolver::initialConditions() const
+{
+    return m_initialConditions;
+}
+
+QMap<int, float> HeatEquationSolver::boundaryConditions_1() const
+{
+    return m_boundaryConditions_1;
+}
+
+QMap<QPair<int, int>, HeatEquationSolver::ConvectionData> HeatEquationSolver::boundaryConditions_3() const
+{
+    return m_boundaryConditions_3;
 }
