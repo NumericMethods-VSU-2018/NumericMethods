@@ -4,7 +4,6 @@
 
 using Point = std::vector<double>;
 
-Point operator+(const Point &p1, const Point &p2);
 Point operator/(const Point &lhs, const double &rhs);
 Point newPoint(double x, double y);
 Point newPoint(const Point &p);
