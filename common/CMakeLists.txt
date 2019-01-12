@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 project(common CXX)
 
 add_library(${PROJECT_NAME}
-    SHARED
+    STATIC
     include/common.h
     src/common.cpp
 )

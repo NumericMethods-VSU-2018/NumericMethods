@@ -5,7 +5,7 @@ project(BandMatrix CXX)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 add_library(${PROJECT_NAME}
-    SHARED
+    STATIC
     include/BandMatrix.h
     src/BandMatrix.cpp
     include/ReorderMatrix.h
