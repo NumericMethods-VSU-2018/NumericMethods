@@ -15,7 +15,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC common)
 
 find_package(cppunit)
 
-if (${cppunit_Found})
+if (${CPPUNIT_FOUND})
     add_executable(${PROJECT_NAME}_test
         test/main.cpp
         test/ParserTest.cpp

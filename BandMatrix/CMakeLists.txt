@@ -18,7 +18,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC common)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 find_package(cppunit)
-if (${cppunit_Found})
+if (${CPPUNIT_FOUND})
     add_executable(${PROJECT_NAME}_app
         test/main.cpp
         test/BandMatrixTest.cpp
