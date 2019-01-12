@@ -1,5 +1,6 @@
 #include "heatequationsolver.h"
 
+#include <BorderRules.h>
 #include <gausssolver.h>
 #include <parser.h>
 #include <BandMatrix.h>
@@ -19,9 +20,11 @@ QVector<QVector<T>> stdToQtMatrix(const std::vector<std::vector<T>>& m)
 HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
     const InputData data = parseFile(fileName.toStdString());
     const Point origin = newPoint(data.x0, data.y0);
-    const auto k_v = getGlobalMatrixAndVector(data.hx, data.hy,
+    auto k_v = getGlobalMatrixAndVector(data.hx, data.hy,
         origin, data.k_x, data.k_y, data.f);
 
+    //m_boundaryConditions_1 = QMap<int, float>(data.cond1);
+    //countBorderRules(k_v.first, k_v.second, data.cond1);
     QVector<QVector<float>> K = stdToQtMatrix(k_v.first);
     QVector<float> V = QVector<float>::fromStdVector(k_v.second);
 
@@ -29,12 +32,6 @@ HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
 
     m_xoffsets = QVector<CoordDiff>::fromStdVector(data.hx);
     m_yoffsets = QVector<CoordDiff>::fromStdVector(data.hy);
-
-    const int vertexCount = data.Nx * data.Ny;
-
-    //m_initialConditions.resize(vertexCount);
-    m_temperatures.resize(vertexCount);
-    m_boundaryConditions_1 = QMap<int, float>(data.cond1);
 
     const bool success = solveSystem(K, V, m_temperatures);
 }

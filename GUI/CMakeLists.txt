@@ -34,6 +34,7 @@ target_link_libraries(${PROJECT_NAME}
     BandMatrix
     HeatConductivityMatrix
     Gauss
+    BorderRules
 )
 
 target_include_directories(${PROJECT_NAME}
