@@ -1,6 +1,6 @@
 #include "BorderRules.h"
 
-void countBorderRules(Matrix& matrix, Vector& f, std::map<int, double> &boundaryCondition)
+void countBorderRules(Matrix& matrix, Vector& f, const std::map<int, float> &boundaryCondition)
 {
     for (auto cond : boundaryCondition)
     {

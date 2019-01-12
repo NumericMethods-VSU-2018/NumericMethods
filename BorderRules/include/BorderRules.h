@@ -4,4 +4,4 @@
 #include <map>
 #include <vector>
 
-void countBorderRules(Matrix& matrix, Vector& f, std::map<int, double> &boundaryCondition);
+void countBorderRules(Matrix& matrix, Vector& f, const std::map<int, float> &boundaryCondition);
