@@ -21,19 +21,21 @@ MathFunc readFunc(std::istringstream& ss)
     ss >> type;
     if (type == "const")
     {
-        int val;
+        float val;
         ss >> val;
-        return [val](Coord x, Coord y){ return val; };
+        return [val](Coord x, Coord y){
+            return val;
+        };
     }
     else if (type == "linear")
     {
-        int a, b, c;
+        float a, b, c;
         ss >> a >> b >> c;
         return [a, b, c](Coord x, Coord y){ return a*x + b*y + c; };
     }
     else if (type == "quad")
     {
-        int a1, a2, b1, b2, c;
+        float a1, a2, b1, b2, c;
         ss >> a1 >> a2 >> b1 >> b2 >> c;
         return [a1, a2, b1, b2, c](Coord x, Coord y){
             return a1*x*x + a2*x + b1*y*y + b2*y + c;
