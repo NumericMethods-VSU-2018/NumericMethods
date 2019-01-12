@@ -37,18 +37,19 @@ std::vector<Point> getPoints(std::vector<CoordDiff> h_x,
                              std::vector<CoordDiff> h_y,
                              const Point &origin) {
     Point current = newPoint(origin);
-    int points_count = (h_x.size() + 1) * (h_y.size() + 1);
+    const size_t x_size = h_x.size() + 1;
+    const size_t y_size = h_y.size() + 1;
+    int points_count = x_size * y_size;
     std::vector<Point> points(points_count);
     points[0] = newPoint(current);
-    for (int i = 0; i < h_y.size() + 1; i++) {
-        for (int j = 0; j < h_x.size(); j++) {
-            movePoint(current, h_x[j], 0);
-            points[i * (h_x.size() + 1) + j + 1] = newPoint(current);
+    for (int y = 0; y < y_size; y++) {
+        points[y * x_size] = newPoint(current);
+        for (int x = 0; x < h_x.size(); x++) {
+            movePoint(current, h_x[x], 0);
+            points[y * x_size + x + 1] = newPoint(current);
         }
-        setPoint(current, 0, current[1] + h_y[i]);
-        if(i != h_y.size()) {
-            points[i * (h_x.size() + 1) + h_y.size() + 1] = newPoint(current);
-        }
+        if (y != y_size)
+            setPoint(current, origin[0], current[1] + h_y[y]);
     }
 //    setPoint(current,0,0);
     return points;
