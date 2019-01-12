@@ -7,11 +7,14 @@
 #include <QDateTime>
 #include <QRandomGenerator>
 
+#include <algorithm>
+
 HeatEquationSolverGLData::HeatEquationSolverGLData(const QVector<float> &xoffsets,
                                                      const QVector<float> &yoffsets,
                                                      const QVector2D &origin,
                                                      const QVector<float> temperatures, MeshPattern pattern)
-    : m_rowCount(yoffsets.size()), m_colCount(xoffsets.size()), m_pattern(pattern), m_positionsVBO(nullptr), m_colorsVBO(nullptr), m_ebo(nullptr) {
+    : m_rowCount(yoffsets.size()), m_colCount(xoffsets.size()), m_pattern(pattern), m_positionsVBO(nullptr), m_colorsVBO(nullptr), m_ebo(nullptr),
+    m_maxTemperature(0), m_minTemperature(0) {
     Q_ASSERT(m_rowCount * m_colCount == temperatures.size());
     buildShaders();
 
@@ -88,16 +91,15 @@ void HeatEquationSolverGLData::updateColors(const QVector<float> &temperatures) 
     if (colorCount != m_colors.size())
         m_colors.resize(colorCount);
 
-    QRandomGenerator gen(QDateTime::currentMSecsSinceEpoch());
+    m_minTemperature = *std::min_element(temperatures.cbegin(), temperatures.cend());
+    m_maxTemperature = *std::max_element(temperatures.cbegin(), temperatures.cend());
+    const float tempRange = m_maxTemperature - m_minTemperature;
+
     for (int vertInd = 0; vertInd < temperatures.size(); vertInd++) {
         // pretty temperature to color conversion func
-        float temperature = 1.0f;//temperatures[rowInd][colInd];
-       // const QVector3D color(temperature, temperature, temperature);
-        float t = gen.generate() / (float) std::numeric_limits<quint32>::max();
-//            const QVector3D color(gen.generate() / (float) std::numeric_limits<quint32>::max(),
-//                                gen.generate() / (float) std::numeric_limits<quint32>::max(),
-//                                  gen.generate() / (float) std::numeric_limits<quint32>::max());
-        const QVector3D color(t, 0, 1 - t);
+        const float relTemp = (temperatures[vertInd] - m_minTemperature) / tempRange;
+
+        const QVector3D color(relTemp, 0.0f, 1.0f - relTemp);
         m_colors[vertInd] = color;
     }
 }
@@ -125,6 +127,40 @@ void HeatEquationSolverGLData::drawWireframe(QOpenGLFunctions_3_3_Compatibility 
     m_ebo->release();
     m_vao.release();
     m_program.release();
+}
+
+void HeatEquationSolverGLData::drawScale(QOpenGLFunctions_3_3_Compatibility *functions)
+{
+    const int segmentCount = 3;
+    const float delta = (0.9f - 0.6f) / segmentCount;
+    const float colors[] =
+    {
+        0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f
+    };
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    functions->glBegin(GL_QUAD_STRIP);
+        functions->glColor3f(colors[0], colors[1], colors[2]);
+        functions->glVertex2f(-0.9f, -0.75f);
+        functions->glVertex2f(-0.9f, -0.85f);
+
+        functions->glColor3f(colors[3], colors[4], colors[5]);
+        functions->glVertex2f(-0.6f, -0.75f);
+        functions->glVertex2f(-0.6f, -0.85f);
+    functions->glEnd();
+
+    // Mesh
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    functions->glBegin(GL_QUAD_STRIP);
+    functions->glColor3f(0.0f, 0.0f, 0.0f);
+    for (int i = 0; i <= segmentCount; i++) {
+        functions->glVertex2f(-0.9f + i * delta, -0.75f);
+        functions->glVertex2f(-0.9f + i * delta, -0.85f);
+    }
+    functions->glEnd();
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void HeatEquationSolverGLData::drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view) {

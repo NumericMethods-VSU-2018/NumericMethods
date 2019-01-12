@@ -24,6 +24,12 @@ public:
     ~HeatEquationSolverGLData();
 
     BoundingBox boundingBox() const;
+    inline float maxTemperature() const {
+        return m_maxTemperature;
+    }
+    inline float minTemperature() const {
+        return m_minTemperature;
+    }
     void updatePositions(const QVector<float> &xoffsets,
                            const QVector<float> &yoffsets,
                            const QVector2D &origin);
@@ -31,6 +37,7 @@ public:
 
     void drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
     void drawWireframe(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
+    void drawScale(QOpenGLFunctions_3_3_Compatibility *functions);
     QVector<QVector2D> positions() const;
 
 private:
@@ -43,6 +50,8 @@ private:
     QVector<QVector3D> m_colors;
     QVector<QVector3D> m_wireframeColors;
     QVector<unsigned> m_indices;
+    float m_maxTemperature;
+    float m_minTemperature;
 
     BoundingBox m_bbox;
     QOpenGLShaderProgram m_program;

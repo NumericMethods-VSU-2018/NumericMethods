@@ -43,6 +43,7 @@ private:
     QPoint m_lastMousePos;
 
     void drawOverlay();
+    void drawScaleOverlay(QPainter &painter);
 };
 
 #endif // OPENGLWIDGET_H
