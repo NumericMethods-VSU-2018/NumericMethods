@@ -1,9 +1,9 @@
 #pragma once
 
+#include <common.h>
+
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
-
-using Matrix = std::vector<std::vector<int>>;
 
 class ReorderTest : public CppUnit::TestFixture {
 public:

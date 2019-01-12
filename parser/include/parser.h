@@ -1,11 +1,7 @@
 #pragma once
 
-#include <functional>
+#include <common.h>
 #include <vector>
-
-using Coord = float;
-using CoordDiff = float;
-using MathFunc = std::function<float (Coord, Coord)>;
 
 struct InputData
 {
@@ -19,4 +15,4 @@ struct InputData
 };
 
 InputData parseInput(const std::string& input);
-InputData parseFil(const std::string& file);
+InputData parseFile(const std::string& file);
