@@ -13,6 +13,7 @@ add_library(${PROJECT_NAME}
 )
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_generic_lambdas)
+target_link_libraries(${PROJECT_NAME} PUBLIC common)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 

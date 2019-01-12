@@ -1,4 +1,5 @@
-#include "../include/HeatMatrix.h"
+#include "HeatMatrix.h"
+#include <cassert>
 
 Matrix init(int width, int height) {
     Matrix matrix(height);
@@ -11,8 +12,8 @@ Matrix init(int width, int height) {
 Matrix getLocal(const Point &i,
                 const Point &j,
                 const Point &k,
-                const std::function<double(double, double)> &k_x,
-                const std::function<double(double, double)> &k_y) {
+                const MathFunc &k_x,
+                const MathFunc &k_y) {
     // i - 0, j - 1, k - 2
     Matrix local = init(3, 3);
     double space = 0.5 * (j[0] * k[1] - k[0] * j[1] + i[0] * j[1] - i[0] * k[1] + k[0] * i[1] - j[0] * i[1]);
@@ -60,6 +61,8 @@ Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
         }
         return result;
     }
+    assert(false);
+    return {};
 }
 
 Vector operator+(const Vector &lhs, const Vector &rhs){
@@ -70,12 +73,14 @@ Vector operator+(const Vector &lhs, const Vector &rhs){
         }
         return result;
     }
+    assert(false);
+    return {};
 }
 
 Vector getLocalVector(const Point &i,
                       const Point &j,
                       const Point &k,
-                      const std::function<double(double, double)> &f) {
+                      const MathFunc &f) {
     Vector local(3);
     std::vector<Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
@@ -100,12 +105,12 @@ Vector localVectorToGlobal(const Vector &local, const int &i, const int &j, cons
     return global;
 }
 
-std::pair<Matrix, Vector> getGlobalMatrixAndVector(std::vector<double> h_x,
-                                                   std::vector<double> h_y,
+std::pair<Matrix, Vector> getGlobalMatrixAndVector(std::vector<CoordDiff> h_x,
+                                                   std::vector<CoordDiff> h_y,
                                                    Point origin,
-                                                   const std::function<double(double, double)> &k_x,
-                                                   const std::function<double(double, double)> &k_y,
-                                                   const std::function<double(double, double)> &f) {
+                                                   const MathFunc &k_x,
+                                                   const MathFunc &k_y,
+                                                   const MathFunc &f) {
     std::vector<Point> points = getPoints(h_x, h_y, origin);
     int width = h_x.size() + 1;
     int height = h_y.size() + 1;

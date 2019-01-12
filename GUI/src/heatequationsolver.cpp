@@ -1,68 +1,42 @@
 #include "heatequationsolver.h"
 
-#include <QFile>
-#include <QTextStream>
-#include <QIODevice>
+#include <gausssolver.h>
+#include <parser.h>
+#include <BandMatrix.h>
+#include <HeatMatrix.h>
 
+template<class T>
+QVector<QVector<T>> stdToQtMatrix(const std::vector<std::vector<T>>& m)
+{
+    QVector<QVector<T>> res(m.size());
+    for (int i = 0; i < m.size(); ++i) {
+        res[i] = QVector<T>::fromStdVector(m[i]);
+    }
+
+    return res;
+}
 
 HeatEquationSolver::HeatEquationSolver(const QString &fileName) {
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    Q_ASSERT(file.isOpen());
+    const InputData data = parseFile(fileName.toStdString());
+    const Point origin = newPoint(data.x0, data.y0);
+    const auto k_v = getGlobalMatrixAndVector(data.hx, data.hy,
+        origin, data.k_x, data.k_y, data.f);
 
-    QTextStream in(&file);
+    QVector<QVector<float>> K = stdToQtMatrix(k_v.first);
+    QVector<float> V = QVector<float>::fromStdVector(k_v.second);
 
-    const int xoffsetSize = in.readLine().toInt();
-    Q_ASSERT(!in.atEnd());
-    const int yoffsetSize = in.readLine().toInt();
-    Q_ASSERT(!in.atEnd());
+    m_origin = QVector2D(origin[0], origin[1]);
 
-    QStringList strOrigin = in.readLine().split(' ');
-    Q_ASSERT(strOrigin.size() == 2);
-    m_origin = QVector2D(strOrigin[0].toFloat(), strOrigin[1].toFloat());
+    m_xoffsets = QVector<CoordDiff>::fromStdVector(data.hx);
+    m_yoffsets = QVector<CoordDiff>::fromStdVector(data.hy);
 
-    m_xoffsets.resize(xoffsetSize);
-    m_yoffsets.resize(yoffsetSize);
+    const int vertexCount = data.Nx * data.Ny;
 
-    for (int xoffsetInd = 0; xoffsetInd < xoffsetSize; xoffsetInd++) {
-        m_xoffsets[xoffsetInd] = in.readLine().toFloat();
-    }
-    for (int yoffsetInd = 0; yoffsetInd < yoffsetSize; yoffsetInd++) {
-        m_yoffsets[yoffsetInd] = in.readLine().toFloat();
-    }
-
-    const int vertexCount = xoffsetSize * yoffsetSize;
-    m_coefX.resize(vertexCount);
-    m_coefY.resize(vertexCount);
     //m_initialConditions.resize(vertexCount);
     m_temperatures.resize(vertexCount);
+    m_boundaryConditions_1 = QMap<int, float>(data.cond1);
 
-    for (int i = 0; i < vertexCount; i++) {
-        const QString &line = in.readLine();
-        const QStringList &splittedLine = line.split(' ');
-        m_coefX[i] = splittedLine[0].toFloat();
-        m_coefY[i] = splittedLine[1].toFloat();
-        //m_initialConditions[i] = splittedLine[2].toFloat();
-    }
-
-    const int boundaryConditions_1_size = in.readLine().toInt();
-    for (int i = 0; i < boundaryConditions_1_size; i++){
-        const QString &line = in.readLine();
-        const QStringList &splittedLine = line.split(' ');
-        const int boundaryVertInd = splittedLine[0].toInt();
-        m_boundaryConditions_1[boundaryVertInd] = splittedLine[1].toFloat();
-    }
-
-    const int boundaryConditions_3_size = in.readLine().toInt();
-    for (int i = 0; i < boundaryConditions_3_size; i++){
-        const QString &line = in.readLine();
-        const QStringList &splittedLine = line.split(' ');
-        const QPair<int, int> boundaryInd = { splittedLine[0].toInt(), splittedLine[1].toInt() };
-        m_boundaryConditions_3[boundaryInd] = { splittedLine[2].toFloat(), splittedLine[3].toFloat() };
-    }
-
-    file.close();
-    m_temperatures.fill(0, vertexCount);
+    const bool success = solveSystem(K, V, m_temperatures);
 }
 
 HeatEquationSolver::HeatEquationSolver(const QVector<float> &xoffsets, const QVector<float> &yoffsets, const QPointF &origin)

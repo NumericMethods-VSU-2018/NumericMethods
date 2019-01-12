@@ -1,11 +1,8 @@
 #pragma once
 
-#include <functional>
+#include <common.h>
 #include <vector>
-
-using Coord = float;
-using CoordDiff = float;
-using MathFunc = std::function<float (Coord, Coord)>;
+#include <map>
 
 struct InputData
 {
@@ -16,7 +13,9 @@ struct InputData
 
     MathFunc k_x, k_y, f; // коэффициенты уравнения
     MathFunc phi; // функция, задающая граничное условие.
+
+    BoundaryCond1 cond1;
 };
 
 InputData parseInput(const std::string& input);
-InputData parseFil(const std::string& file);
+InputData parseFile(const std::string& file);

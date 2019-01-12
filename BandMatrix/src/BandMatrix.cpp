@@ -1,15 +1,5 @@
 #include "BandMatrix.h"
 
-Matrix create2DMatrix(size_t width, size_t height)
-{
-    Matrix m(height);
-    for (auto& line : m) {
-        line.resize(width);
-    }
-
-    return m;
-}
-
 size_t getBandWidth(const Matrix& m)
 {
     size_t width = 0;
