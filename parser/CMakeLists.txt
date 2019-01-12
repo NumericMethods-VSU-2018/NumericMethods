@@ -13,22 +13,26 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} PUBLIC common)
 
-add_executable(${PROJECT_NAME}_test
-    test/main.cpp
-    test/ParserTest.cpp
-    test/ParserTest.h
-)
-
 find_package(cppunit)
 
-target_link_libraries(${PROJECT_NAME}_test
-    PRIVATE
-    ${PROJECT_NAME}
-    ${CPPUNIT_LIBRARIES}
-)
+if (${cppunit_Found})
+    add_executable(${PROJECT_NAME}_test
+        test/main.cpp
+        test/ParserTest.cpp
+        test/ParserTest.h
+    )
 
-target_include_directories(${PROJECT_NAME}_test
-    PRIVATE
-    test
-    ${CPPUNIT_INCLUDE_DIRS}
-)
+    target_link_libraries(${PROJECT_NAME}_test
+        PRIVATE
+        ${PROJECT_NAME}
+        ${CPPUNIT_LIBRARIES}
+    )
+
+    target_include_directories(${PROJECT_NAME}_test
+        PRIVATE
+        test
+        ${CPPUNIT_INCLUDE_DIRS}
+    )
+else()
+    message(WARNING "CppUnit not found. Tests will be disabled.")
+endif()

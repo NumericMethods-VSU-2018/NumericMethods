@@ -17,24 +17,27 @@ target_link_libraries(${PROJECT_NAME} PUBLIC common)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-add_executable(${PROJECT_NAME}_app
-    test/main.cpp
-    test/BandMatrixTest.cpp
-    test/BandMatrixTest.h
-    test/ReorderTest.cpp
-    test/ReorderTest.h
-)
-
 find_package(cppunit)
+if (${cppunit_Found})
+    add_executable(${PROJECT_NAME}_app
+        test/main.cpp
+        test/BandMatrixTest.cpp
+        test/BandMatrixTest.h
+        test/ReorderTest.cpp
+        test/ReorderTest.h
+    )
 
-target_link_libraries(${PROJECT_NAME}_app
-    PRIVATE
-    ${PROJECT_NAME}
-    ${CPPUNIT_LIBRARIES}
-)
+    target_link_libraries(${PROJECT_NAME}_app
+        PRIVATE
+        ${PROJECT_NAME}
+        ${CPPUNIT_LIBRARIES}
+    )
 
-target_include_directories(${PROJECT_NAME}_app
-    PRIVATE
-    test
-    ${CPPUNIT_INCLUDE_DIRS}
-)
+    target_include_directories(${PROJECT_NAME}_app
+        PRIVATE
+        test
+        ${CPPUNIT_INCLUDE_DIRS}
+    )
+else()
+    message(WARNING "CppUnit not found. Tests will be disabled.")
+endif()
