@@ -1,4 +1,5 @@
 #include "../include/Point.h"
+#include <cassert>
 
 Point newPoint(double x, double y) {
     Point point(2);
@@ -12,10 +13,14 @@ Point operator/(const Point &lhs, const double &rhs) {
     if (rhs != 0) {
         return newPoint(lhs[0] / rhs, lhs[1] / rhs);
     }
+    assert(false);
+    return {};
 }
+
 Point newPoint(const Point &p){
     return newPoint(p[0], p[1]);
 }
+
 std::vector<Point> getPoints(std::vector<double> h_x,
                              std::vector<double> h_y,
                              const Point &origin) {

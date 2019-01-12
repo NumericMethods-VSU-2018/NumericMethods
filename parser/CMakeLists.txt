@@ -4,7 +4,7 @@ project(parser CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-add_library(${CMAKE_PROJECT_NAME}
+add_library(${PROJECT_NAME}
     SHARED
     include/parser.h
     src/parser.cpp

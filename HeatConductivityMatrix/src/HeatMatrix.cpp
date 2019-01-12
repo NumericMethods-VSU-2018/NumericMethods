@@ -1,4 +1,5 @@
 #include "../include/HeatMatrix.h"
+#include <cassert>
 
 Matrix init(int width, int height) {
     Matrix matrix(height);
@@ -60,6 +61,8 @@ Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
         }
         return result;
     }
+    assert(false);
+    return {};
 }
 
 Vector operator+(const Vector &lhs, const Vector &rhs){
@@ -70,6 +73,8 @@ Vector operator+(const Vector &lhs, const Vector &rhs){
         }
         return result;
     }
+    assert(false);
+    return {};
 }
 
 Vector getLocalVector(const Point &i,
