@@ -84,7 +84,7 @@ void HeatEquationSolverGLData::updatePositions(
             m_positions[curPosInd] = pos;
 
             if (rowInd < m_rowCount - 1) {
-                if (m_pattern == MeshPattern::TopLeft_BotRight) {
+                if (m_pattern == MeshPattern::BotLeft_TopRight) {
                     m_indices.push_back(curPosInd);
                     m_indices.push_back((rowInd + 1) * m_colCount + colInd);
                 } else {
