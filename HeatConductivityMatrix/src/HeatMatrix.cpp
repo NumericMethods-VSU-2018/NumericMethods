@@ -92,16 +92,12 @@ Vector getLocalVector(const Point &i,
                              i[0] * j[1] - j[0] * i[1]};
 
     std::vector<double> N = {0., 0., 0.};
-    double f_approx = 0.;
     for (auto &p: midPoints) {
         for (int ind = 0; ind < 3; ind++) {
-            N[ind] += (a[ind] + b[ind] * p[0] + c[ind] * p[1]);
+            N[ind] +=(a[ind] + b[ind] * p[0] + c[ind] * p[1]) * f (p[0], p[1]);
         }
-        f_approx += f(p[0], p[1]);
-    }
-    f_approx *= (space / 3);
     for (int ind = 0; ind < 3; ind++) {
-        local[ind] = f_approx * N[ind] / 6;
+        local[ind] = N[ind] / 6;
     }
     return local;
 }
