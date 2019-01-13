@@ -4,7 +4,6 @@ bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float>
 {
     const int systemSize = coefs.size();
     result.resize(systemSize);
-    const float eps = std::numeric_limits<float>::epsilon();
 
     for (int rowInd = 0; rowInd < systemSize; ++rowInd) {
         float max = qAbs(coefs[rowInd][rowInd]);
@@ -17,7 +16,7 @@ bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float>
             }
         }
 
-        if (max < eps)
+        if (qFuzzyIsNull(max))
             return false;
 
         for (int j = 0; j < systemSize; j++) {
@@ -32,7 +31,7 @@ bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float>
 
         for (int i = rowInd; i < systemSize; i++) {
             float temp = coefs[i][rowInd];
-            if (qAbs(temp) < eps)
+            if (qFuzzyIsNull(temp))
                 continue;
 
             for (int j = 0; j < systemSize; j++)
@@ -42,8 +41,10 @@ bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float>
             if (i == rowInd)
                 continue;
 
-            for (int j = 0; j < systemSize; j++)
-              coefs[i][j] -= coefs[rowInd][j];
+            for (int j = 0; j < systemSize; j++) {
+                coefs[i][j] -= coefs[rowInd][j];
+            }
+
 
             y[i] -= y[rowInd];
         }
