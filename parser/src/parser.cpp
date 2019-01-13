@@ -35,11 +35,19 @@ MathFunc readFunc(std::istringstream& ss)
     }
     else if (type == "quad")
     {
-        float a1, a2, b1, b2, c;
-        ss >> a1 >> a2 >> b1 >> b2 >> c;
-        return [a1, a2, b1, b2, c](Coord x, Coord y){
-            return a1*x*x + a2*x + b1*y*y + b2*y + c;
+        float a, b, c;
+        ss >> a >> b >> c;
+        return [a, b, c](Coord x, Coord y){
+            return a*x*x + b*y*y + c;
         };
+    }
+    else if (type == "x")
+    {
+        return [](Coord x, Coord y){ return x; };
+    }
+    else if (type == "y")
+    {
+        return [](Coord x, Coord y){ return y; };
     }
     else
     {
