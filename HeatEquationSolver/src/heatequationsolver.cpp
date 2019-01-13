@@ -22,8 +22,8 @@ HeatEquationSolver::HeatEquationSolver(const InputData& data) {
     auto k_v = getGlobalMatrixAndVector(data.hx, data.hy,
         origin, data.k_x, data.k_y, data.f);
 
-    //m_boundaryConditions_1 = QMap<int, float>(data.cond1);
-    //countBorderRules(k_v.first, k_v.second, data.cond1);
+    m_boundaryConditions_1 = QMap<int, float>(data.cond1);
+    countBorderRules(k_v.first, k_v.second, data.cond1);
     QVector<QVector<float>> K = stdToQtMatrix(k_v.first);
     QVector<float> V = QVector<float>::fromStdVector(k_v.second);
 
