@@ -84,7 +84,6 @@ void HeatEquationSolverGLData::updatePositions(
             m_positions[curPosInd] = pos;
 
             if (rowInd < m_rowCount - 1) {
-                //bad
                 if (m_pattern == MeshPattern::BotLeft_TopRight) {
                     m_indices.push_back(curPosInd);
                     m_indices.push_back((rowInd + 1) * m_colCount + colInd);
@@ -113,15 +112,30 @@ void HeatEquationSolverGLData::updateColors(const QVector<float> &temperatures) 
 
     m_minTemperature = *std::min_element(temperatures.cbegin(), temperatures.cend());
     m_maxTemperature = *std::max_element(temperatures.cbegin(), temperatures.cend());
-    const float tempRange = m_maxTemperature - m_minTemperature;
+    float tempRange = m_maxTemperature - m_minTemperature;
+
+    minmaxTemperatureColors[0] = 0.0f;
+    minmaxTemperatureColors[1] = 0.0f;
+    minmaxTemperatureColors[2] = 1.0f;
+
+    if (qFuzzyIsNull(tempRange)) {
+        m_colors.fill(QVector3D(0.0f, 0.0f, 1.0f));
+        minmaxTemperatureColors[3] = 0.0f;
+        minmaxTemperatureColors[4] = 0.0f;
+        minmaxTemperatureColors[5] = 1.0f;
+        return;
+    }
 
     for (int vertInd = 0; vertInd < temperatures.size(); vertInd++) {
-        // pretty temperature to color conversion func
         const float relTemp = (temperatures[vertInd] - m_minTemperature) / tempRange;
 
         const QVector3D color(relTemp, 0.0f, 1.0f - relTemp);
         m_colors[vertInd] = color;
     }
+
+    minmaxTemperatureColors[3] = 1.0f;
+    minmaxTemperatureColors[4] = 0.0f;
+    minmaxTemperatureColors[5] = 0.0f;
 }
 
 void HeatEquationSolverGLData::drawWireframe(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view)
@@ -153,19 +167,14 @@ void HeatEquationSolverGLData::drawScale(QOpenGLFunctions_3_3_Compatibility *fun
 {
     const int segmentCount = 3;
     const float delta = (0.9f - 0.6f) / segmentCount;
-    const float colors[] =
-    {
-        0.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 0.0f
-    };
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     functions->glBegin(GL_QUAD_STRIP);
-        functions->glColor3f(colors[0], colors[1], colors[2]);
+        functions->glColor3f(minmaxTemperatureColors[0], minmaxTemperatureColors[1], minmaxTemperatureColors[2]);
         functions->glVertex2f(-0.9f, -0.75f);
         functions->glVertex2f(-0.9f, -0.85f);
 
-        functions->glColor3f(colors[3], colors[4], colors[5]);
+        functions->glColor3f(minmaxTemperatureColors[3], minmaxTemperatureColors[4], minmaxTemperatureColors[5]);
         functions->glVertex2f(-0.6f, -0.75f);
         functions->glVertex2f(-0.6f, -0.85f);
     functions->glEnd();

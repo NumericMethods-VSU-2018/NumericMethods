@@ -156,10 +156,10 @@ void OpenGLWidget::drawOverlay()
     for (int i = 0; i < positions.size(); i++){
         const QPoint screenPos = m_camera->worldToScreen(positions[i]);
         const QString strWorldPos = "(" + QString::number(positions[i].x()) + ", " + QString::number(positions[i].y()) + ")";
-        //const QString strTemperature = " t = " + QString::number(m_solver->temperatures()[i]) + " K";
+        const QString strTemperature = QString::number(m_solver->temperatures()[i], 'f', 2) + " C";
         //const QString strCoefK = "K(x, y) = (" + QString::number(m_solver->coefX()[i]) + ", " + QString::number(m_solver->coefY()[i]) + ")";
         painter.drawText(screenPos + QPoint(3, -6 - 2 * fontSize), strWorldPos);
-       // painter.drawText(screenPos + QPoint(3, -6 - fontSize), strTemperature);
+        painter.drawText(screenPos + QPoint(3, -6 - fontSize), strTemperature);
         //painter.drawText(screenPos + QPoint(3, -6 - fontSize), strCoefK);
     }
 

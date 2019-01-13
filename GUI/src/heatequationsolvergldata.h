@@ -52,6 +52,7 @@ private:
     QVector<unsigned> m_indices;
     float m_maxTemperature;
     float m_minTemperature;
+    float minmaxTemperatureColors[6];
 
     BoundingBox m_bbox;
     QOpenGLShaderProgram m_program;
