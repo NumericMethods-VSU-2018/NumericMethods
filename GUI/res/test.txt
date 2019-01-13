@@ -1,12 +1,20 @@
+2 2
 1 1
-5
-5
+1 1
+
 0 0
 
-const 123
-linear 2 3 4
-linear 2 1 5
-quad 1 2 3 4 5
+const 1
+const 1
+const 1
+const 0
 
-1
+8
 0 5
+1 5
+2 5
+3 5
+5 5
+6 5
+7 5
+8 5

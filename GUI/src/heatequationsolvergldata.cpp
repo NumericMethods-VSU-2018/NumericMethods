@@ -84,7 +84,7 @@ void HeatEquationSolverGLData::updatePositions(
             m_positions[curPosInd] = pos;
 
             if (rowInd < m_rowCount - 1) {
-                if (m_pattern == MeshPattern::BotLeft_TopRight) {
+                if (m_pattern == MeshPattern::TopLeft_BotRight) {
                     m_indices.push_back(curPosInd);
                     m_indices.push_back((rowInd + 1) * m_colCount + colInd);
                 } else {
@@ -98,7 +98,7 @@ void HeatEquationSolverGLData::updatePositions(
 
         current.setX(origin.x());
         if (rowInd != yoffsets.size())
-            current.setY(origin.y() + yoffsets[rowInd]);
+            current.setY(current.y() + yoffsets[rowInd]);
 
         m_indices.push_back(m_positions.size());
     }
@@ -190,6 +190,16 @@ void HeatEquationSolverGLData::drawScale(QOpenGLFunctions_3_3_Compatibility *fun
     functions->glEnd();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+int HeatEquationSolverGLData::rowCount() const
+{
+    return m_rowCount;
+}
+
+int HeatEquationSolverGLData::colCount() const
+{
+    return m_colCount;
 }
 
 void HeatEquationSolverGLData::drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view) {

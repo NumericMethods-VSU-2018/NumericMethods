@@ -40,6 +40,10 @@ public:
     void drawScale(QOpenGLFunctions_3_3_Compatibility *functions);
     QVector<QVector2D> positions() const;
 
+    int rowCount() const;
+
+    int colCount() const;
+
 private:
     const QString m_vertexShaderSource = "vert.glsl";
     const QString m_fragmentShaderSource = "frag.glsl";

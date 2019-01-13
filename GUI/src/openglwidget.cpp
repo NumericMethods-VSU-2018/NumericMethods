@@ -121,25 +121,26 @@ void OpenGLWidget::drawOverlay()
     painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     painter.setPen(Qt::black);
 
-    const QVector<float> xoffsets = m_solver->xoffsets();
-    const QVector<float> yoffsets = m_solver->yoffsets();
+    const int rowCount = m_solverGLData->rowCount();
+    const int colCount = m_solverGLData->colCount();
+    const QVector<QVector2D> &positions = m_solverGLData->positions();
     const QVector2D origin = m_solver->origin();
     int minDist = std::numeric_limits<int>::max();
 
-    for (int rowInd = 0; rowInd < yoffsets.size(); rowInd++) {
-        for (int colInd = 0; colInd < xoffsets.size(); colInd++){
-
-            const QVector2D curPos(origin.x() + xoffsets[colInd], origin.y() + yoffsets[rowInd]);
+    for (int rowInd = 0; rowInd < rowCount; rowInd++) {
+        for (int colInd = 0; colInd < colCount; colInd++){
+            const int curPosInd = rowInd * colCount + colInd;
+            const QVector2D curPos = positions[curPosInd];
             const QPoint screenCurPos = m_camera->worldToScreen(curPos);
 
-            if (colInd < xoffsets.size() - 1) {
-                const QVector2D rightPos(origin.x() + xoffsets[colInd + 1], origin.y() + yoffsets[rowInd]);
+            if (colInd < colCount - 1) {
+                const QVector2D rightPos = positions[curPosInd + 1];
                 const QPoint screenRightPos = m_camera->worldToScreen(rightPos);
                 minDist = qAbs(qMin(minDist, screenRightPos.x() - screenCurPos.x()));
             }
 
-            if (rowInd < yoffsets.size() - 1) {
-                const QVector2D botPos(origin.x() + xoffsets[colInd], origin.y() + yoffsets[rowInd + 1]);
+            if (rowInd < rowCount - 1) {
+                const QVector2D botPos = positions[curPosInd + colCount];
                 const QPoint screenBotPos = m_camera->worldToScreen(botPos);
                 minDist = qAbs(qMin(minDist, screenBotPos.y() - screenCurPos.y()));
             }
@@ -147,11 +148,10 @@ void OpenGLWidget::drawOverlay()
         }
     }
 
-    const int fontSize = qMax(1.0f, qMin(0.2f * minDist, 15.0f));
+    const int fontSize = qMax(1.0f, qMin(0.2f * minDist, 16.0f));
     QFont font;
     font.setPixelSize(fontSize);
     painter.setFont(font);
-    const QVector<QVector2D> positions = m_solverGLData->positions();
 
     for (int i = 0; i < positions.size(); i++){
         const QPoint screenPos = m_camera->worldToScreen(positions[i]);
@@ -167,6 +167,10 @@ void OpenGLWidget::drawOverlay()
 }
 
 void OpenGLWidget::drawScaleOverlay(QPainter &painter) {
+    QFont font;
+    font.setPixelSize(16);
+    painter.setFont(font);
+
     const int segmentCount = 3;
     const float delta = (0.9 - 0.6) / segmentCount;
     const float minT = m_solverGLData->minTemperature();
