@@ -20,16 +20,17 @@ Matrix getLocal(const Point &i,
     std::vector<Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
-
+    double kx = 0.;
+    double ky = 0.;
+    for (auto &p: midPoints) {
+        kx += k_x(p[0], p[1]);
+        ky += k_y(p[0], p[1]);
+    }
+    kx *= (space / 3);
+    ky *= (space / 3);
     for (int row = 0; row < 3; row++) {
         for (int col = 0; col < 3; col++) {
-            for (auto &p: midPoints) {
-                local[row][col] +=
-                        b[row] * b[col] * k_x(p[0], p[1]) +
-                        c[row] * c[col] * k_y(p[0], p[1]);
-
-            }
-            local[row][col] *= space / 3;
+            local[row][col] = (b[row] * b[col] * kx + c[row] * c[col] * ky) / (4 * space);
         }
     }
     return local;
@@ -65,8 +66,8 @@ Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
     return {};
 }
 
-Vector operator+(const Vector &lhs, const Vector &rhs){
-    if (lhs.size() == rhs.size()){
+Vector operator+(const Vector &lhs, const Vector &rhs) {
+    if (lhs.size() == rhs.size()) {
         Vector result(rhs.size());
         for (int i = 0; i < rhs.size(); i++) {
             result[i] = lhs[i] + rhs[i];
@@ -82,22 +83,30 @@ Vector getLocalVector(const Point &i,
                       const Point &k,
                       const MathFunc &f) {
     Vector local(3);
-    std::vector<Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
+    double space = 0.5 * (j[0] * k[1] - k[0] * j[1] + i[0] * j[1] - i[0] * k[1] + k[0] * i[1] - j[0] * i[1]);
+    std::vector <Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
     std::vector<double> a = {j[0] * k[1] - k[0] * j[1],
-                             k[0] * i[2] - k[1] * i[0],
+                             k[0] * i[1] - k[1] * i[0],
                              i[0] * j[1] - j[0] * i[1]};
-    for (int row = 0; row < 3; row++) {
-        for (auto &p: midPoints) {
-            local[row] += (a[row] + b[row]*p[0] + c[row]*p[1]) * f(p[0], p[1]);
+
+    std::vector<double> N = {0., 0., 0.};
+    double f_approx = 0.;
+    for (auto &p: midPoints) {
+        for (int ind = 0; ind < 3; ind++) {
+            N[ind] += (a[ind] + b[ind] * p[0] + c[ind] * p[1]);
         }
-        local[row] *= 1.5;
+        f_approx += f(p[0], p[1]);
+    }
+    f_approx *= (space / 3);
+    for (int ind = 0; ind < 3; ind++) {
+        local[ind] = f_approx * N[ind] / 6;
     }
     return local;
 }
 
-Vector localVectorToGlobal(const Vector &local, const int &i, const int &j, const int &k, const int &size){
+Vector localVectorToGlobal(const Vector &local, const int &i, const int &j, const int &k, const int &size) {
     Vector global(size);
     global[i] = local[0];
     global[j] = local[1];
@@ -105,13 +114,13 @@ Vector localVectorToGlobal(const Vector &local, const int &i, const int &j, cons
     return global;
 }
 
-std::pair<Matrix, Vector> getGlobalMatrixAndVector(std::vector<CoordDiff> h_x,
-                                                   std::vector<CoordDiff> h_y,
-                                                   Point origin,
-                                                   const MathFunc &k_x,
-                                                   const MathFunc &k_y,
-                                                   const MathFunc &f) {
-    std::vector<Point> points = getPoints(h_x, h_y, origin);
+std::pair <Matrix, Vector> getGlobalMatrixAndVector(std::vector <CoordDiff> h_x,
+                                                    std::vector <CoordDiff> h_y,
+                                                    Point origin,
+                                                    const MathFunc &k_x,
+                                                    const MathFunc &k_y,
+                                                    const MathFunc &f) {
+    std::vector <Point> points = getPoints(h_x, h_y, origin);
     int width = h_x.size() + 1;
     int height = h_y.size() + 1;
     Matrix global = init(width * height, width * height);
