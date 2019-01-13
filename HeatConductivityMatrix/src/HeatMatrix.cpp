@@ -96,6 +96,7 @@ Vector getLocalVector(const Point &i,
         for (int ind = 0; ind < 3; ind++) {
             N[ind] +=(a[ind] + b[ind] * p[0] + c[ind] * p[1]) * f (p[0], p[1]);
         }
+    }
     for (int ind = 0; ind < 3; ind++) {
         local[ind] = N[ind] / 6;
     }
