@@ -17,6 +17,8 @@ public:
     CPPUNIT_TEST(testAllPointsAreKnown);
     CPPUNIT_TEST(test3x3LinearVertical);
     CPPUNIT_TEST(test3x3LinearDiagonal);
+    CPPUNIT_TEST(test3x3Quad);
+    CPPUNIT_TEST(test3x3Quad2);
     CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -24,6 +26,7 @@ protected:
     void test3x3LinearVertical();
     void test3x3LinearDiagonal();
     void test3x3Quad();
+    void test3x3Quad2();
 
 private:
     void checkSolver(const InputData& data, const QVector<float>& temp);
