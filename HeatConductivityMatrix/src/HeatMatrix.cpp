@@ -16,7 +16,12 @@ Matrix getLocal(const Point &i,
                 const MathFunc &k_y) {
     // i - 0, j - 1, k - 2
     Matrix local = init(3, 3);
-    double space = 0.5 * (j[0] * k[1] - k[0] * j[1] + i[0] * j[1] - i[0] * k[1] + k[0] * i[1] - j[0] * i[1]);
+    const auto minX = std::min(std::min(i[0], j[0]), k[0]);
+    const auto minY = std::min(std::min(i[1], j[1]), k[1]);
+    const auto maxX = std::max(std::max(i[0], j[0]), k[0]);
+    const auto maxY = std::max(std::max(i[1], j[1]), k[1]);
+    const auto space = (maxX - minX) * (maxY - minY) * 0.5;
+
     std::vector<Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
@@ -83,7 +88,6 @@ Vector getLocalVector(const Point &i,
                       const Point &k,
                       const MathFunc &f) {
     Vector local(3);
-    double space = 0.5 * (j[0] * k[1] - k[0] * j[1] + i[0] * j[1] - i[0] * k[1] + k[0] * i[1] - j[0] * i[1]);
     std::vector <Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
