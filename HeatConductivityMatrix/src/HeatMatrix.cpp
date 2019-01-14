@@ -139,7 +139,7 @@ std::pair <Matrix, Vector> getGlobalMatrixAndVector(std::vector <CoordDiff> h_x,
             global = global + globalLocal;
             globalVector = globalVector + globalLocalVector;
         }
-        if ((index + 1) % height != 0) {
+        if ((index + 1) % width != 0) {
             int i = index + 1;
             int j = index + width;
             int k = index + width + 1;
