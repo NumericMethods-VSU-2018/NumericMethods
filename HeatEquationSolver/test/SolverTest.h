@@ -15,12 +15,15 @@ class SolverTest : public CppUnit::TestFixture
 public:
     CPPUNIT_TEST_SUITE(SolverTest);
     CPPUNIT_TEST(testAllPointsAreKnown);
-    CPPUNIT_TEST(test3x3Linear);
+    CPPUNIT_TEST(test3x3LinearVertical);
+    CPPUNIT_TEST(test3x3LinearDiagonal);
     CPPUNIT_TEST_SUITE_END();
 
 protected:
     void testAllPointsAreKnown();
-    void test3x3Linear();
+    void test3x3LinearVertical();
+    void test3x3LinearDiagonal();
+    void test3x3Quad();
 
 private:
     void checkSolver(const InputData& data, const QVector<float>& temp);
