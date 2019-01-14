@@ -83,24 +83,60 @@ void SolverTest::test3x3LinearDiagonal()
 
 void SolverTest::test3x3Quad()
 {
-    // Doesn't work
     InputData data = {
         {1, 1}, {1, 1}, // hx, hy
-        0, 0,     // origin
-        [](Coord x, Coord y){ return x; }, // k_x
-        [](Coord x, Coord y){ return y; }, // k_y
-        [](Coord x, Coord y){ return 8 * x + 12 * y; }, // f
+        -1, -1,     // origin
+        [](Coord x, Coord y){ return 1; }, // k_x
+        [](Coord x, Coord y){ return 1; }, // k_y
+        [](Coord x, Coord y){ return 4; }, // f
         [](Coord x, Coord y){ return 0; }, // phi unused
+        // U = x^2 + y^2
         {
-            {0, 0},
-            {8, 10},
+            {0, 2},
+            {1, 1},
+            {2, 2},
+            {3, 1},
+            {5, 1},
+            {6, 2},
+            {7, 1},
+            {8, 2},
         }
     };
 
     QVector<float> correctTemp = {
-        5, 5, 5,
-        5, 3, 5,
-        5, 5, 5
+        2, 1,    2,
+        1, 1.25, 1,
+        2, 1,    2
+    };
+    checkSolver(data, correctTemp);
+}
+
+void SolverTest::test3x3Quad2()
+{
+    InputData data = {
+        {1, 1}, {1, 1}, // hx, hy
+        -1, -1,     // origin
+        [](Coord x, Coord y){ return 1; }, // k_x
+        [](Coord x, Coord y){ return 1; }, // k_y
+        [](Coord x, Coord y){ return 4; }, // f
+        [](Coord x, Coord y){ return 0; }, // phi unused
+        // U = x^2 + y^2 + 1
+        {
+            {0, 3},
+            {1, 2},
+            {2, 3},
+            {3, 2},
+            {5, 2},
+            {6, 3},
+            {7, 2},
+            {8, 3},
+        }
+    };
+
+    QVector<float> correctTemp = {
+        3, 2,    3,
+        2, 2.25, 2,
+        3, 2,    3
     };
     checkSolver(data, correctTemp);
 }
