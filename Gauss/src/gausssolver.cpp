@@ -9,11 +9,17 @@ bool solveBandSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<fl
         for (int j = 0; j < extended[i].size(); j++)
         {
             if (j > i) {
-                const int modifiedInd = i - j + L - 1;
-                extended[i][j] = coefs[j][modifiedInd];
+                int modifiedInd = i - j + L - 1;
+                if (modifiedInd < 0 || modifiedInd >= L)
+                    extended[i][j] = 0;
+                else
+                    extended[i][j] = coefs[j][modifiedInd];
             } else {
-                const int modifiedInd = j - i + L - 1;
-                extended[i][j] = coefs[i][modifiedInd];
+                int modifiedInd = j - i + L - 1;
+                if (modifiedInd < 0 || modifiedInd >= L)
+                    extended[i][j] = 0;
+                else
+                    extended[i][j] = coefs[i][modifiedInd];
             }
         }
     }
