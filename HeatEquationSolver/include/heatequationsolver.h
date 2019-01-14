@@ -29,7 +29,10 @@ public:
         float m_ambientTemperature;
     };
 
+    bool valid() const;
+
 private:
+    bool m_valid;
     QVector<float> m_temperatures;
     QVector<CoordDiff> m_xoffsets;
     QVector<CoordDiff> m_yoffsets;

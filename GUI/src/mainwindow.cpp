@@ -8,14 +8,20 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QMessageBox>
 #include <QFileDialog>
 
 MainWindow::MainWindow(HeatEquationSolver *solver, QWidget *parent)
     : QMainWindow(parent)
-    , m_heatEquationSolver(solver)
+    , m_heatEquationSolver(solver),
+      m_openGLWidget(nullptr)
 {
-    m_openGLWidget = new OpenGLWidget(m_heatEquationSolver, this);
-    setCentralWidget(m_openGLWidget);
+    if (solver->valid()) {
+        m_openGLWidget = new OpenGLWidget(m_heatEquationSolver, this);
+        setCentralWidget(m_openGLWidget);
+    } else {
+        QMessageBox::warning(this, "Внимание", "Система несовместна");
+    }
 
     m_menuBar = new QMenuBar(this);
     m_menu = m_menuBar->addMenu(tr("&Файл"));
@@ -59,9 +65,15 @@ void MainWindow::on_loadNewData()
     }
 
     const InputData data = parseFile(filename.toStdString());
-    delete m_openGLWidget;
-    delete m_heatEquationSolver;
+    if (m_openGLWidget)
+        delete m_openGLWidget;
+    if (m_openGLWidget)
+        delete m_heatEquationSolver;
     m_heatEquationSolver = new HeatEquationSolver(data);
-    m_openGLWidget = new OpenGLWidget(m_heatEquationSolver, this);
-    setCentralWidget(m_openGLWidget);
+    if (m_heatEquationSolver->valid()) {
+        m_openGLWidget = new OpenGLWidget(m_heatEquationSolver, this);
+        setCentralWidget(m_openGLWidget);
+    } else {
+        QMessageBox::warning(this, "Внимание", "Система несовместна");
+    }
 }

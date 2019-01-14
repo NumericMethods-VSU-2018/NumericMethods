@@ -5,6 +5,7 @@
 #include <BandMatrix.h>
 #include <HeatMatrix.h>
 #include <parser.h>
+#include <QDebug>
 
 template<class T>
 QVector<QVector<T>> stdToQtMatrix(const std::vector<std::vector<T>>& m)
@@ -32,7 +33,7 @@ HeatEquationSolver::HeatEquationSolver(const InputData& data) {
     m_xoffsets = QVector<CoordDiff>::fromStdVector(data.hx);
     m_yoffsets = QVector<CoordDiff>::fromStdVector(data.hy);
 
-    const bool success = solveSystem(K, V, m_temperatures);
+    m_valid = solveSystem(K, V, m_temperatures);
 }
 
 QVector<float> HeatEquationSolver::temperatures() const
@@ -68,4 +69,9 @@ QMap<int, float> HeatEquationSolver::boundaryConditions_1() const
 QMap<QPair<int, int>, HeatEquationSolver::ConvectionData> HeatEquationSolver::boundaryConditions_3() const
 {
     return m_boundaryConditions_3;
+}
+
+bool HeatEquationSolver::valid() const
+{
+    return m_valid;
 }
