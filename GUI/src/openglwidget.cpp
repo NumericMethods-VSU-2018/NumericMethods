@@ -6,7 +6,7 @@
 #include <QtMath>
 #include <QOpenGLFramebufferObject>
 
-OpenGLWidget::OpenGLWidget(const HeatEquationSolver *solver, QWidget *parent)
+OpenGLWidget::OpenGLWidget(HeatEquationSolver *solver, QWidget *parent)
     : QOpenGLWidget(parent), m_solver(solver), m_isPan(false), m_isDrawOverlay(true)
 {
     QSurfaceFormat format;
@@ -30,13 +30,14 @@ OpenGLWidget::~OpenGLWidget() {
 void OpenGLWidget::initializeGL() {
     initializeOpenGLFunctions();
 
-    glClearColor(0.3, 0.3, 0.3, 1);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_PRIMITIVE_RESTART);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_POLYGON_OFFSET_FILL);
 
     m_camera = new Camera();
     QVector<float> temps = m_solver->temperatures();
+
     m_solverGLData = new HeatEquationSolverGLData(m_solver->xoffsets(),
                                                   m_solver->yoffsets(),
                                                   m_solver->origin(),
@@ -124,7 +125,6 @@ void OpenGLWidget::drawOverlay()
     const int rowCount = m_solverGLData->rowCount();
     const int colCount = m_solverGLData->colCount();
     const QVector<QVector2D> &positions = m_solverGLData->positions();
-    const QVector2D origin = m_solver->origin();
     int minDist = std::numeric_limits<int>::max();
 
     for (int rowInd = 0; rowInd < rowCount; rowInd++) {

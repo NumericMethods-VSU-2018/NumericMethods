@@ -16,9 +16,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     const InputData data = parseFile(filename);
-    const HeatEquationSolver solver(data);
+    HeatEquationSolver *solver = new HeatEquationSolver(data);
 
-    MainWindow w(&solver);
+    MainWindow w(solver);
     w.show();
 
     return a.exec();

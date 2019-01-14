@@ -13,7 +13,7 @@
 class OpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Compatibility
 {
 public:
-    OpenGLWidget(const HeatEquationSolver *solver, QWidget *parent = nullptr);
+    OpenGLWidget(HeatEquationSolver *solver, QWidget *parent = nullptr);
 
     void fitToScreen();
 
@@ -33,7 +33,7 @@ protected:
 
 private:
     Camera *m_camera;
-    const HeatEquationSolver *m_solver;
+    HeatEquationSolver *m_solver;
     HeatEquationSolverGLData *m_solverGLData;
     QOpenGLFramebufferObject *m_framebuffer;
 

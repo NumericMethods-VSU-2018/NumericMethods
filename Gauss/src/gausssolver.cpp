@@ -1,5 +1,26 @@
 #include "gausssolver.h"
 
+bool solveBandSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result)
+{
+    const int L = coefs[0].size();
+    QVector<QVector<float>> extended(coefs.size());
+    for (int i = 0; i < extended.size(); i++) {
+        extended[i].resize(coefs.size());
+        for (int j = 0; j < extended[i].size(); j++)
+        {
+            if (j > i) {
+                const int modifiedInd = i - j + L - 1;
+                extended[i][j] = coefs[j][modifiedInd];
+            } else {
+                const int modifiedInd = j - i + L - 1;
+                extended[i][j] = coefs[i][modifiedInd];
+            }
+        }
+    }
+
+    return solveSystem(extended, y, result);
+}
+
 bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result)
 {
     const int systemSize = coefs.size();
