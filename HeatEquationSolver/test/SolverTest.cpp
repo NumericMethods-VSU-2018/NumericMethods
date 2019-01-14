@@ -109,6 +109,7 @@ void SolverTest::checkSolver(const InputData& data,
     const QVector<float>& correctTemp)
 {
     HeatEquationSolver solver(data);
+    CPPUNIT_ASSERT(solver.valid());
     QVector<float> actualTemp = solver.temperatures();
     auto a = actualTemp.toStdVector();
     auto c = correctTemp.toStdVector();
