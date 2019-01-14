@@ -38,5 +38,9 @@ target_include_directories(${PROJECT_NAME}
 )
 
 configure_file(res/test.txt test.txt COPYONLY)
+configure_file(res/test1.txt test1.txt COPYONLY)
+configure_file(res/test2.txt test2.txt COPYONLY)
+configure_file(res/test3.txt test3.txt COPYONLY)
+configure_file(res/test4.txt test4.txt COPYONLY)
 configure_file(res/vert.glsl vert.glsl COPYONLY)
 configure_file(res/frag.glsl frag.glsl COPYONLY)
