@@ -31,11 +31,9 @@ Matrix getLocal(const Point &i,
         kx += k_x(p[0], p[1]);
         ky += k_y(p[0], p[1]);
     }
-    kx *= (space / 3);
-    ky *= (space / 3);
     for (int row = 0; row < 3; row++) {
         for (int col = 0; col < 3; col++) {
-            local[row][col] = (b[row] * b[col] * kx + c[row] * c[col] * ky) / (4 * space);
+            local[row][col] = (b[row] * b[col] * kx + c[row] * c[col] * ky) / (12 * space);
         }
     }
     return local;
