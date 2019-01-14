@@ -39,10 +39,14 @@ void SolverTest::test3x3LinearVertical()
         [](Coord x, Coord y) { return 1; }, // k_y
         [](Coord x, Coord y) { return 0; }, // f
         [](Coord x, Coord y) { return 99; }, // phi unused
+        // U = 5 - y
         {
             {0, 5},
             {1, 5},
             {2, 5},
+
+            {3, 4},
+            {5, 4},
 
             {6, 3},
             {7, 3},
@@ -57,6 +61,39 @@ void SolverTest::test3x3LinearVertical()
     };
     checkSolver(data, correctTemp);
 }
+
+void SolverTest::test3x3SimetricalOneValue()
+{
+    InputData data = {
+        {1, 1}, {1, 1}, // hx, hy
+        0, 0,     // origin
+        [](Coord x, Coord y) { return 1; }, // k_x
+        [](Coord x, Coord y) { return 1; }, // k_y
+        [](Coord x, Coord y) { return 0; }, // f
+        [](Coord x, Coord y) { return 99; }, // phi unused
+        // U = 5 - y
+        {
+            {0, 5},
+            {1, 5},
+            {2, 5},
+
+            {3, 5},
+            {5, 5},
+
+            {6, 5},
+            {7, 5},
+            {8, 5},
+        }
+    };
+
+    QVector<float> correctTemp = {
+        5, 5, 5,
+        5, 5, 5,
+        5, 5, 5
+    };
+    checkSolver(data, correctTemp);
+}
+
 
 void SolverTest::test3x3LinearDiagonal()
 {
@@ -137,6 +174,96 @@ void SolverTest::test3x3Quad2()
         3, 2,    3,
         2, 2.25, 2,
         3, 2,    3
+    };
+    checkSolver(data, correctTemp);
+}
+
+// U = x + y
+void SolverTest::x_plus_y_linear()
+{
+    InputData data = {
+        {1, 3}, {1, 3}, // hx, hy
+        0, 0,     // origin
+        [](Coord x, Coord y){ return x; }, // k_x
+        [](Coord x, Coord y){ return y; }, // k_y
+        [](Coord x, Coord y){ return 2; }, // f
+        [](Coord x, Coord y){ return 0; }, // phi unused
+        {
+            {0, 0},
+            {1, 1},
+            {2, 4},
+            {3, 1},
+            {5, 5},
+            {6, 4},
+            {7, 5},
+            {8, 8},
+        }
+    };
+
+    QVector<float> correctTemp = {
+        0, 1, 4,
+        1, 2, 5,
+        4, 5, 8
+    };
+    checkSolver(data, correctTemp);
+}
+
+// U = x + y
+void SolverTest::x_plus_y()
+{
+    InputData data = {
+        {1, 3}, {1, 3}, // hx, hy
+        0, 0,     // origin
+        [](Coord x, Coord y){ return 1; }, // k_x
+        [](Coord x, Coord y){ return 1; }, // k_y
+        [](Coord x, Coord y){ return 0; }, // f
+        [](Coord x, Coord y){ return 0; }, // phi unused
+        {
+            {0, 0},
+            {1, 1},
+            {2, 4},
+            {3, 1},
+            {5, 5},
+            {6, 4},
+            {7, 5},
+            {8, 8},
+        }
+    };
+
+    QVector<float> correctTemp = {
+        0, 1, 4,
+        1, 2, 5,
+        4, 5, 8
+    };
+    checkSolver(data, correctTemp);
+}
+
+// U = x + y + 1
+void SolverTest::x_plus_y_plus_one()
+{
+    InputData data = {
+        {0.5, 1.5}, {0.5, 1.5}, // hx, hy
+        0, 0,     // origin
+        [](Coord x, Coord y){ return 1; }, // k_x
+        [](Coord x, Coord y){ return 1; }, // k_y
+        [](Coord x, Coord y){ return 0; }, // f
+        [](Coord x, Coord y){ return 0; }, // phi unused
+        {
+            {0, 1},
+            {1, 1.5},
+            {2, 3},
+            {3, 1.5},
+            {5, 3.5},
+            {6, 3},
+            {7, 3.5},
+            {8, 5},
+        }
+    };
+
+    QVector<float> correctTemp = {
+        1,   1.5, 3,
+        1.5, 2,   3.5,
+        3,   3.5, 5
     };
     checkSolver(data, correctTemp);
 }
