@@ -10,13 +10,8 @@ void SolverTest::testAllPointsAreKnown()
         [](Coord x, Coord y) { return 1; }, // k_x
         [](Coord x, Coord y) { return 1; }, // k_y
         [](Coord x, Coord y) { return 1; }, // f
-        [](Coord x, Coord y) { return 99; }, // phi unused
-        {
-            {0, 5},
-            {1, 5},
-            {2, 5},
-            {3, 5},
-        }
+        [](Coord x, Coord y) { return 5; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -38,19 +33,8 @@ void SolverTest::test3x3LinearVertical()
         [](Coord x, Coord y) { return 1; }, // k_x
         [](Coord x, Coord y) { return 1; }, // k_y
         [](Coord x, Coord y) { return 0; }, // f
-        [](Coord x, Coord y) { return 99; }, // phi unused
-        // U = 5 - y
+        [](Coord x, Coord y) { return 5 - y; }, // phi unused
         {
-            {0, 5},
-            {1, 5},
-            {2, 5},
-
-            {3, 4},
-            {5, 4},
-
-            {6, 3},
-            {7, 3},
-            {8, 3},
         }
     };
 
@@ -70,20 +54,8 @@ void SolverTest::test3x3SimetricalOneValue()
         [](Coord x, Coord y) { return 1; }, // k_x
         [](Coord x, Coord y) { return 1; }, // k_y
         [](Coord x, Coord y) { return 0; }, // f
-        [](Coord x, Coord y) { return 99; }, // phi unused
-        // U = 5 - y
-        {
-            {0, 5},
-            {1, 5},
-            {2, 5},
-
-            {3, 5},
-            {5, 5},
-
-            {6, 5},
-            {7, 5},
-            {8, 5},
-        }
+        [](Coord x, Coord y) { return 5; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -126,18 +98,8 @@ void SolverTest::test3x3Quad()
         [](Coord x, Coord y){ return 1; }, // k_x
         [](Coord x, Coord y){ return 1; }, // k_y
         [](Coord x, Coord y){ return 4; }, // f
-        [](Coord x, Coord y){ return 0; }, // phi unused
-        // U = x^2 + y^2
-        {
-            {0, 2},
-            {1, 1},
-            {2, 2},
-            {3, 1},
-            {5, 1},
-            {6, 2},
-            {7, 1},
-            {8, 2},
-        }
+        [](Coord x, Coord y){ return x*x + y*y; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -156,18 +118,8 @@ void SolverTest::test3x3Quad2()
         [](Coord x, Coord y){ return 1; }, // k_x
         [](Coord x, Coord y){ return 1; }, // k_y
         [](Coord x, Coord y){ return 4; }, // f
-        [](Coord x, Coord y){ return 0; }, // phi unused
-        // U = x^2 + y^2 + 1
-        {
-            {0, 3},
-            {1, 2},
-            {2, 3},
-            {3, 2},
-            {5, 2},
-            {6, 3},
-            {7, 2},
-            {8, 3},
-        }
+        [](Coord x, Coord y){ return x*x + y*y + 1; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -187,17 +139,8 @@ void SolverTest::x_plus_y_linear()
         [](Coord x, Coord y){ return x; }, // k_x
         [](Coord x, Coord y){ return y; }, // k_y
         [](Coord x, Coord y){ return 2; }, // f
-        [](Coord x, Coord y){ return 0; }, // phi unused
-        {
-            {0, 0},
-            {1, 1},
-            {2, 4},
-            {3, 1},
-            {5, 5},
-            {6, 4},
-            {7, 5},
-            {8, 8},
-        }
+        [](Coord x, Coord y){ return x + y; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -217,17 +160,8 @@ void SolverTest::x_plus_y()
         [](Coord x, Coord y){ return 1; }, // k_x
         [](Coord x, Coord y){ return 1; }, // k_y
         [](Coord x, Coord y){ return 0; }, // f
-        [](Coord x, Coord y){ return 0; }, // phi unused
-        {
-            {0, 0},
-            {1, 1},
-            {2, 4},
-            {3, 1},
-            {5, 5},
-            {6, 4},
-            {7, 5},
-            {8, 8},
-        }
+        [](Coord x, Coord y){ return x + y; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
@@ -247,17 +181,8 @@ void SolverTest::x_plus_y_plus_one()
         [](Coord x, Coord y){ return 1; }, // k_x
         [](Coord x, Coord y){ return 1; }, // k_y
         [](Coord x, Coord y){ return 0; }, // f
-        [](Coord x, Coord y){ return 0; }, // phi unused
-        {
-            {0, 1},
-            {1, 1.5},
-            {2, 3},
-            {3, 1.5},
-            {5, 3.5},
-            {6, 3},
-            {7, 3.5},
-            {8, 5},
-        }
+        [](Coord x, Coord y){ return x + y + 1; }, // phi unused
+        { }
     };
 
     QVector<float> correctTemp = {
