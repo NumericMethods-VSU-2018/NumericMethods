@@ -1,0 +1,68 @@
+%%% Преамбула %%%
+
+\usepackage{fontspec} % XeTeX
+\usepackage{xunicode} % Unicode для XeTeX
+
+%\usepackage[T2A,T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\usepackage[russian,english]{babel}
+
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{Times New Roman} % Нормоконтроллеры хотят именно его
+\newfontfamily\cyrillicfont{Times New Roman}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+
+% Отступы у страниц
+\usepackage{geometry}
+\geometry{
+	left=3cm,
+	right=1.5cm,
+	top=2cm,
+	bottom=2cm
+}
+
+\renewcommand{\baselinestretch}{1.5} % Полуторный межстрочный интервал
+\setlength{\parindent}{5ex} % Абзацный отступ
+\setlength{\parskip}{0.3cm} % Расстояние между абзацами
+
+\usepackage{indentfirst} % Красная строка после заголовка
+
+% Многоточие в оглавлении
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+
+%\usepackage[center]{titlesec} % Центрирование заголовков
+%\titleformat{\section}
+%  {\centering\large\bfseries} % format
+%  {}% label
+%  {0pt} % sep
+%  {\large}
+
+%\titleformat{\subsection}
+%  {\normalsize\bfseries} % format
+%  {}% label
+%  {0pt} % sep
+%  {\normalsize}
+
+% Центрирование заголовков
+%\usepackage{sectsty}
+%\sectionfont{\centering}
+
+% Списки
+\usepackage{enumitem}
+\setlist[enumerate,itemize]{leftmargin=12.7mm} % Отступы в списках
+
+\makeatletter
+    \AddEnumerateCounter{\asbuk}{\@asbuk}{м)}
+\makeatother
+\setlist{nolistsep} % Нет отступов между пунктами списка
+
+\usepackage{unicode-math}
+\usepackage{amsmath}
+%\usepackage{amssymb}
+\numberwithin{equation}{section}
+
+\renewcommand{\contentsname}{\centering{Содержание}}
