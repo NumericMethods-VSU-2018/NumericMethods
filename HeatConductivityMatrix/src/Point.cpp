@@ -37,20 +37,26 @@ std::vector<Point> getPoints(std::vector<CoordDiff> h_x,
                              std::vector<CoordDiff> h_y,
                              const Point &origin) {
     Point current = newPoint(origin);
-    int points_count = (h_x.size() + 1) * (h_y.size() + 1);
+    const auto rowCount = h_y.size() + 1;
+    const auto colCount = h_x.size() + 1;
+    int points_count = rowCount * colCount;
     std::vector<Point> points(points_count);
     points[0] = newPoint(current);
-    for (int i = 0; i < h_y.size() + 1; i++) {
-        for (int j = 0; j < h_x.size(); j++) {
-            movePoint(current, h_x[j], 0);
-            points[i * (h_x.size() + 1) + j + 1] = newPoint(current);
+
+    for (int rowInd = 0; rowInd < rowCount; rowInd++) {
+        for (int colInd = 0; colInd < colCount; colInd++) {
+            int curPosInd = rowInd * colCount + colInd;
+            points[rowInd * colCount + colInd] = newPoint(current);
+            if (colInd != h_x.size())
+                movePoint(current, h_x[colInd], 0);
         }
-        setPoint(current, 0, current[1] + h_y[i]);
-        if(i != h_y.size()) {
-            points[i * (h_x.size() + 1) + h_y.size() + 1] = newPoint(current);
+
+        setPoint(current, 0, current[1] + h_y[rowInd]);
+        if(rowInd != h_y.size()) {
+            points[rowInd * colCount + rowCount] = newPoint(current);
         }
     }
-//    setPoint(current,0,0);
+
     return points;
 }
 
