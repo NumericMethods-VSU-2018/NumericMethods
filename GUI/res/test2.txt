@@ -7,8 +7,4 @@
 const 1
 const 1
 const 0
-unused
-
-2
-0 10
-8 0
+linear 0 -1 5
