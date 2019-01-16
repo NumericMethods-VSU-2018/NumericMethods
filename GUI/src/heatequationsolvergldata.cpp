@@ -106,11 +106,13 @@ void HeatEquationSolverGLData::updatePositions(
 }
 
 void HeatEquationSolverGLData::updateColors(QVector<float> temperatures) {
+    m_minTemperature = qRound(temperatures[0] * 100) / 100;
+    m_maxTemperature = m_minTemperature;
     int colorCount = temperatures.size();
     if (colorCount != m_colors.size())
         m_colors.resize(colorCount);
 
-    for (int i = 0; i < temperatures.size(); i++) {
+    for (int i = 1; i < temperatures.size(); i++) {
         temperatures[i] = qRound(temperatures[i] * 100) / 100;
 
         if (m_minTemperature > temperatures[i])
@@ -118,8 +120,7 @@ void HeatEquationSolverGLData::updateColors(QVector<float> temperatures) {
         if (m_maxTemperature < temperatures[i])
             m_maxTemperature = temperatures[i];
     }
-    //m_minTemperature = *std::min_element(temperatures.cbegin(), temperatures.cend());
-    //m_maxTemperature = *std::max_element(temperatures.cbegin(), temperatures.cend());
+
     float tempRange = m_maxTemperature - m_minTemperature;
 
     minmaxTemperatureColors[0] = 0.0f;
