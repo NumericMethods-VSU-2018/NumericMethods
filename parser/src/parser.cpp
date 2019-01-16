@@ -106,6 +106,7 @@ InputData parseInput(const std::string& str)
 
     size_t condSize;
     ss >> condSize;
+    condSize = 0;
     for (int i = 0; i < condSize; ++i)
     {
         int pos;
