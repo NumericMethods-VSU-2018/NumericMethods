@@ -28,16 +28,18 @@ std::map<int, float> getBoundCond(
     MathFunc phi)
 {
     std::map<int, float> cond1;
-    int x = x0;
-    int y = y0;
+    Coord x = x0;
+    Coord y = y0;
 
     const auto rowCount = hy.size() + 1;
     const auto colCount = hx.size() + 1;
 
     for (int rowInd = 0; rowInd < rowCount; rowInd++) {
         for (int colInd = 0; colInd < colCount; colInd++) {
-            int curPosInd = rowInd * colCount + colInd;
-            cond1[curPosInd] = phi(x, y);
+            if (rowInd == 0 || rowInd == rowCount - 1 || colInd == 0 || colInd == colCount - 1) {
+                int curPosInd = rowInd * colCount + colInd;
+                cond1[curPosInd] = phi(x, y);
+            }
 
             if (colInd != hx.size())
                 x += hx[colInd];
