@@ -51,9 +51,8 @@ std::vector<Point> getPoints(std::vector<CoordDiff> h_x,
                 movePoint(current, h_x[colInd], 0);
         }
 
-        setPoint(current, 0, current[1] + h_y[rowInd]);
-        if(rowInd != h_y.size()) {
-            points[rowInd * colCount + rowCount] = newPoint(current);
+        if (rowInd != h_y.size()) {
+            setPoint(current, origin[0], current[1] + h_y[rowInd]);
         }
     }
 
