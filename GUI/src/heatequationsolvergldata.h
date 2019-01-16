@@ -33,7 +33,7 @@ public:
     void updatePositions(const QVector<float> &xoffsets,
                            const QVector<float> &yoffsets,
                            const QVector2D &origin);
-    void updateColors(const QVector<float> &temperatures);
+    void updateColors(QVector<float> temperatures);
 
     void drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
     void drawWireframe(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
