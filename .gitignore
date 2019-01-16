@@ -2,3 +2,9 @@
 build-*/
 *.user
 123.txt
+
+# TeX docs
+docs/*.*
+docs/inc/*.*
+!docs/*.tex
+!docs/inc/*.tex
