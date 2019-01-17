@@ -28,4 +28,7 @@ Vector getLocalVector(const Point &i,
 Vector localVectorToGlobal(const Vector &local, const int &i, const int &j, const int &k, const int &size);
 Vector operator+(const Vector &lhs, const Vector &rhs);
 
+double integrate(const Point &i, const Point &j, const Point &k, const MathFunc &f);
+double getSquare(const Point &i, const Point &j, const Point &k);
+
 
