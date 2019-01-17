@@ -76,7 +76,7 @@ void SolverTest::x2_plus_y2()
 
     QVector<double> correctTemp = {
         2, 1, 2,
-        1, 1, 1,
+        1, 0, 1,
         2, 1, 2
     };
     checkSolver(data, correctTemp);
@@ -96,7 +96,7 @@ void SolverTest::x2_plus_y2_plus_one()
 
     QVector<double> correctTemp = {
         3, 2, 3,
-        2, 2, 2,
+        2, 1, 2,
         3, 2, 3
     };
     checkSolver(data, correctTemp);

@@ -125,7 +125,7 @@ Vector getLocalVector(const Point &i,
     const auto square = getSquare(i, j, k);
 
     for (int ind = 0; ind < 3; ind++) {
-        local[ind] = integrate(i, j, k, [&](Coord x, Coord y) -> double {
+        local[ind] = -integrate(i, j, k, [&](Coord x, Coord y) -> double {
             auto N = (a[ind] + b[ind] * x + c[ind] * y) / (2 * square);
             return N * f(x, y);
         });
@@ -170,8 +170,8 @@ std::pair <Matrix, Vector> getGlobalMatrixAndVector(std::vector <CoordDiff> h_x,
         }
         if ((index + 1) % width != 0) {
             int i = index + 1;
-            int j = index + width;
-            int k = index + width + 1;
+            int j = index + width + 1;
+            int k = index + width;
             Point p1 = points[i];
             Point p2 = points[j];
             Point p3 = points[k];
