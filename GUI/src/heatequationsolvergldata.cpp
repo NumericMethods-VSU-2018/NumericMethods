@@ -10,10 +10,10 @@
 #include <algorithm>
 
 HeatEquationSolverGLData::HeatEquationSolverGLData(
-        const QVector<float> &xoffsets,
-        const QVector<float> &yoffsets,
+        const QVector<double> &xoffsets,
+        const QVector<double> &yoffsets,
         const QVector2D &origin,
-        const QVector<float> temperatures,
+        const QVector<double> temperatures,
         MeshPattern pattern)
     : m_rowCount(yoffsets.size() + 1)
     , m_colCount(xoffsets.size() + 1)
@@ -66,8 +66,8 @@ HeatEquationSolverGLData::~HeatEquationSolverGLData()
 }
 
 void HeatEquationSolverGLData::updatePositions(
-	const QVector<float> &xoffsets,
-	const QVector<float> &yoffsets,
+	const QVector<double> &xoffsets,
+	const QVector<double> &yoffsets,
 	const QVector2D &origin)
 {
     QVector2D current = origin;
@@ -105,7 +105,7 @@ void HeatEquationSolverGLData::updatePositions(
     m_bbox = BoundingBox(m_positions);
 }
 
-void HeatEquationSolverGLData::updateColors(QVector<float> temperatures) {
+void HeatEquationSolverGLData::updateColors(QVector<double> temperatures) {
     m_minTemperature = qRound(temperatures[0] * 100) / 100;
     m_maxTemperature = m_minTemperature;
     int colorCount = temperatures.size();
@@ -121,7 +121,7 @@ void HeatEquationSolverGLData::updateColors(QVector<float> temperatures) {
             m_maxTemperature = temperatures[i];
     }
 
-    float tempRange = m_maxTemperature - m_minTemperature;
+    double tempRange = m_maxTemperature - m_minTemperature;
 
     minmaxTemperatureColors[0] = 0.0f;
     minmaxTemperatureColors[1] = 0.0f;
@@ -136,7 +136,7 @@ void HeatEquationSolverGLData::updateColors(QVector<float> temperatures) {
     }
 
     for (int vertInd = 0; vertInd < temperatures.size(); vertInd++) {
-        const float relTemp = (temperatures[vertInd] - m_minTemperature) / tempRange;
+        const double relTemp = (temperatures[vertInd] - m_minTemperature) / tempRange;
 
         const QVector3D color(relTemp, 0.0f, 1.0f - relTemp);
         m_colors[vertInd] = color;
@@ -175,7 +175,7 @@ void HeatEquationSolverGLData::drawWireframe(QOpenGLFunctions_3_3_Compatibility 
 void HeatEquationSolverGLData::drawScale(QOpenGLFunctions_3_3_Compatibility *functions)
 {
     const int segmentCount = 3;
-    const float delta = (0.9f - 0.6f) / segmentCount;
+    const double delta = (0.9f - 0.6f) / segmentCount;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     functions->glBegin(GL_QUAD_STRIP);

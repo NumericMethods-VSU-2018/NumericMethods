@@ -1,16 +1,16 @@
 #include "boundingbox.h"
 
 BoundingBox::BoundingBox()
-    : m_min(QVector2D(std::numeric_limits<float>::max(), std::numeric_limits<float>::max())),
-      m_max(QVector2D(std::numeric_limits<float>::min(), std::numeric_limits<float>::min()))
+    : m_min(QVector2D(std::numeric_limits<double>::max(), std::numeric_limits<double>::max())),
+      m_max(QVector2D(std::numeric_limits<double>::min(), std::numeric_limits<double>::min()))
 {
 
 }
 
 BoundingBox::BoundingBox(const QVector<QVector2D> &positions)
 {
-    QVector2D min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-    QVector2D max(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
+    QVector2D min(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+    QVector2D max(std::numeric_limits<double>::min(), std::numeric_limits<double>::min());
     for (int i = 0; i < positions.size(); i++) {
         const QVector2D &pos = positions[i];
         if (min.x() > pos.x())

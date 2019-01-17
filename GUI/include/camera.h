@@ -10,7 +10,7 @@ class Camera
 public:
     Camera() : m_zoom(1) { }
 
-    void move(int dx, int dy, float speed);
+    void move(int dx, int dy, double speed);
     void zoom(int delta);
 
     void fitToScreen(const BoundingBox &boundingBox);
@@ -21,7 +21,7 @@ public:
 
 private:
     QVector2D m_position;
-    float m_zoom;
+    double m_zoom;
     int m_width;
     int m_height;
 

@@ -37,5 +37,5 @@ protected:
     void x_plus_y_plus_one_asymmetrical();
 
 private:
-    void checkSolver(const InputData& data, const QVector<float>& temp);
+    void checkSolver(const InputData& data, const QVector<double>& temp);
 };

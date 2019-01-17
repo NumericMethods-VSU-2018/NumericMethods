@@ -17,23 +17,23 @@ enum MeshPattern { BotLeft_TopRight, TopLeft_BotRight };
 class HeatEquationSolverGLData
 {
 public:
-    HeatEquationSolverGLData(const QVector<float> &xoffsets,
-                                const QVector<float> &yoffsets,
+    HeatEquationSolverGLData(const QVector<double> &xoffsets,
+                                const QVector<double> &yoffsets,
                                 const QVector2D &origin,
-                                const QVector<float> temperatures, MeshPattern pattern);
+                                const QVector<double> temperatures, MeshPattern pattern);
     ~HeatEquationSolverGLData();
 
     BoundingBox boundingBox() const;
-    inline float maxTemperature() const {
+    inline double maxTemperature() const {
         return m_maxTemperature;
     }
-    inline float minTemperature() const {
+    inline double minTemperature() const {
         return m_minTemperature;
     }
-    void updatePositions(const QVector<float> &xoffsets,
-                           const QVector<float> &yoffsets,
+    void updatePositions(const QVector<double> &xoffsets,
+                           const QVector<double> &yoffsets,
                            const QVector2D &origin);
-    void updateColors(QVector<float> temperatures);
+    void updateColors(QVector<double> temperatures);
 
     void drawMesh(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
     void drawWireframe(QOpenGLFunctions_3_3_Compatibility *functions, const QMatrix4x4 &proj, const QMatrix4x4 &view);
@@ -54,9 +54,9 @@ private:
     QVector<QVector3D> m_colors;
     QVector<QVector3D> m_wireframeColors;
     QVector<unsigned> m_indices;
-    float m_maxTemperature;
-    float m_minTemperature;
-    float minmaxTemperatureColors[6];
+    double m_maxTemperature;
+    double m_minTemperature;
+    double minmaxTemperatureColors[6];
 
     BoundingBox m_bbox;
     QOpenGLShaderProgram m_program;

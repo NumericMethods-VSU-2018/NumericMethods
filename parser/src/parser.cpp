@@ -21,7 +21,7 @@ MathFunc readFunc(std::istringstream& ss)
     ss >> type;
     if (type == "const")
     {
-        float val;
+        double val;
         ss >> val;
         return [val](Coord x, Coord y){
             return val;
@@ -29,13 +29,13 @@ MathFunc readFunc(std::istringstream& ss)
     }
     else if (type == "linear")
     {
-        float a, b, c;
+        double a, b, c;
         ss >> a >> b >> c;
         return [a, b, c](Coord x, Coord y){ return a*x + b*y + c; };
     }
     else if (type == "quad")
     {
-        float a, b, c;
+        double a, b, c;
         ss >> a >> b >> c;
         return [a, b, c](Coord x, Coord y){
             return a*x*x + b*y*y + c;
@@ -110,7 +110,7 @@ InputData parseInput(const std::string& str)
     for (int i = 0; i < condSize; ++i)
     {
         int pos;
-        float val;
+        double val;
         ss >> pos >> val;
         inputData.cond1[pos] = val;
     }

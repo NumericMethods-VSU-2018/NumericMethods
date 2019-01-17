@@ -4,7 +4,7 @@
 #include <QtMath>
 #include <QVector4D>
 
-void Camera::move(int dx, int dy, float speed) {
+void Camera::move(int dx, int dy, double speed) {
     const QVector2D delta(speed * dx, -speed * dy);
     m_position -= delta;
     m_view.translate(delta);
@@ -31,12 +31,12 @@ void Camera::fitToScreen(const BoundingBox &boundingBox)
 
 void Camera::resize(int width, int height) {
     QMatrix4x4 proj;
-    float right = width / 2;
-    float left = -right;
-    float top = height / 2;
-    float bottom = -top;
-    float far = 1;
-    float near = -1;
+    double right = width / 2;
+    double left = -right;
+    double top = height / 2;
+    double bottom = -top;
+    double far = 1;
+    double near = -1;
     proj.ortho(left, right, bottom, top, near, far);
 
     m_width = width;

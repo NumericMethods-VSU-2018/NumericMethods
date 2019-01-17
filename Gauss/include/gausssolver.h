@@ -3,7 +3,7 @@
 
 #include <QVector>
 
-bool solveBandSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result);
-bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result);
+bool solveBandSystem(QVector<QVector<double>> coefs, QVector<double> y, QVector<double> &result);
+bool solveSystem(QVector<QVector<double>> coefs, QVector<double> y, QVector<double> &result);
 
 #endif // GAUSSSOLVER_H

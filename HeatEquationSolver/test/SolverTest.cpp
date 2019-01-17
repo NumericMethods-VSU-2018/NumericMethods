@@ -14,7 +14,7 @@ void SolverTest::allPointsAreKnown()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         5, 5,
         5, 5
     };
@@ -34,7 +34,7 @@ void SolverTest::minus_y_plus_five()
         }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         5, 5, 5,
         4, 4, 4,
         3, 3, 3
@@ -54,7 +54,7 @@ void SolverTest::border_cond_always_5()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         5, 5, 5,
         5, 5, 5,
         5, 5, 5
@@ -74,7 +74,7 @@ void SolverTest::x2_plus_y2()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         2, 1, 2,
         1, 1, 1,
         2, 1, 2
@@ -94,7 +94,7 @@ void SolverTest::x2_plus_y2_plus_one()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         3, 2, 3,
         2, 2, 2,
         3, 2, 3
@@ -114,7 +114,7 @@ void SolverTest::x_plus_y_linear()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         0, 1, 4,
         1, 2, 5,
         4, 5, 8
@@ -134,7 +134,7 @@ void SolverTest::x_plus_y_asymmetrical()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         0, 1, 4,
         1, 2, 5,
         4, 5, 8
@@ -154,7 +154,7 @@ void SolverTest::x_plus_y()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         0, 1, 2,
         1, 2, 3,
         2, 3, 4
@@ -174,7 +174,7 @@ void SolverTest::x_plus_y_plus_one_asymmetrical()
         { }
     };
 
-    QVector<float> correctTemp = {
+    QVector<double> correctTemp = {
         1,   1.5, 3,
         1.5, 2,   3.5,
         3,   3.5, 5
@@ -183,11 +183,11 @@ void SolverTest::x_plus_y_plus_one_asymmetrical()
 }
 
 void SolverTest::checkSolver(const InputData& data,
-    const QVector<float>& correctTemp)
+    const QVector<double>& correctTemp)
 {
     HeatEquationSolver solver(data);
     CPPUNIT_ASSERT(solver.valid());
-    QVector<float> actualTemp = solver.temperatures();
+    QVector<double> actualTemp = solver.temperatures();
     auto a = actualTemp.toStdVector();
     auto c = correctTemp.toStdVector();
     CPPUNIT_ASSERT_EQUAL(correctTemp.size(), actualTemp.size());

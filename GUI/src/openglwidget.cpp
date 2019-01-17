@@ -36,7 +36,7 @@ void OpenGLWidget::initializeGL() {
     glEnable(GL_POLYGON_OFFSET_FILL);
 
     m_camera = new Camera();
-    QVector<float> temps = m_solver->temperatures();
+    QVector<double> temps = m_solver->temperatures();
 
     m_solverGLData = new HeatEquationSolverGLData(m_solver->xoffsets(),
                                                   m_solver->yoffsets(),
@@ -83,7 +83,7 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
     if (m_isPan) {
         int dx = event->pos().x() - m_lastMousePos.x();
         int dy = event->pos().y() - m_lastMousePos.y();
-        float speed = 0.002f * m_solverGLData->boundingBox().diag().length();
+        double speed = 0.002f * m_solverGLData->boundingBox().diag().length();
         m_camera->move(dx, dy, speed);
 
         update();
@@ -172,10 +172,10 @@ void OpenGLWidget::drawScaleOverlay(QPainter &painter) {
     painter.setFont(font);
 
     const int segmentCount = 3;
-    const float delta = (0.9 - 0.6) / segmentCount;
-    const float minT = m_solverGLData->minTemperature();
-    const float maxT = m_solverGLData->maxTemperature();
-    const float step = (maxT - minT) / segmentCount;
+    const double delta = (0.9 - 0.6) / segmentCount;
+    const double minT = m_solverGLData->minTemperature();
+    const double maxT = m_solverGLData->maxTemperature();
+    const double step = (maxT - minT) / segmentCount;
     for (int i = 0; i <= segmentCount; i++){
         const QPoint screenPos = QPoint(
                     width() * (0.09f + i * delta) / 2,

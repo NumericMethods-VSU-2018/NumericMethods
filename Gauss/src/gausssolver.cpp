@@ -1,9 +1,9 @@
 #include "gausssolver.h"
 
-bool solveBandSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result)
+bool solveBandSystem(QVector<QVector<double>> coefs, QVector<double> y, QVector<double> &result)
 {
     const int L = coefs[0].size();
-    QVector<QVector<float>> extended(coefs.size());
+    QVector<QVector<double>> extended(coefs.size());
     for (int i = 0; i < extended.size(); i++) {
         extended[i].resize(coefs.size());
         for (int j = 0; j < extended[i].size(); j++)
@@ -27,13 +27,13 @@ bool solveBandSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<fl
     return solveSystem(extended, y, result);
 }
 
-bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float> &result)
+bool solveSystem(QVector<QVector<double>> coefs, QVector<double> y, QVector<double> &result)
 {
     const int systemSize = coefs.size();
     result.resize(systemSize);
 
     for (int rowInd = 0; rowInd < systemSize; ++rowInd) {
-        float max = qAbs(coefs[rowInd][rowInd]);
+        double max = qAbs(coefs[rowInd][rowInd]);
         int maxElemInColInd = rowInd;
 
         for (int i = rowInd + 1; i < systemSize; i++) {
@@ -47,17 +47,17 @@ bool solveSystem(QVector<QVector<float>> coefs, QVector<float> y, QVector<float>
             return false;
 
         for (int j = 0; j < systemSize; j++) {
-            float temp = coefs[rowInd][j];
+            double temp = coefs[rowInd][j];
             coefs[rowInd][j] = coefs[maxElemInColInd][j];
             coefs[maxElemInColInd][j] = temp;
         }
 
-        float temp = y[rowInd];
+        double temp = y[rowInd];
         y[rowInd] = y[maxElemInColInd];
         y[maxElemInColInd] = temp;
 
         for (int i = rowInd; i < systemSize; i++) {
-            float temp = coefs[i][rowInd];
+            double temp = coefs[i][rowInd];
             if (qFuzzyIsNull(temp))
                 continue;
 
