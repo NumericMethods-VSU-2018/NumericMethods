@@ -9,31 +9,58 @@ Matrix init(int width, int height) {
     return matrix;
 }
 
-Matrix getLocal(const Point &i,
-                const Point &j,
-                const Point &k,
-                const MathFunc &k_x,
-                const MathFunc &k_y) {
-    // i - 0, j - 1, k - 2
-    Matrix local = init(3, 3);
+double getSquare(
+    const Point &i,
+    const Point &j,
+    const Point &k)
+{
     const auto minX = std::min(std::min(i[0], j[0]), k[0]);
     const auto minY = std::min(std::min(i[1], j[1]), k[1]);
     const auto maxX = std::max(std::max(i[0], j[0]), k[0]);
     const auto maxY = std::max(std::max(i[1], j[1]), k[1]);
-    const auto space = (maxX - minX) * (maxY - minY) * 0.5;
+    return (maxX - minX) * (maxY - minY) * 0.5;
+}
 
-    std::vector<Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
+double integrate(
+    const Point &i,
+    const Point &j,
+    const Point &k,
+    const MathFunc &f)
+{
+    const auto square = getSquare(i, j, k);
+    const auto midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
+
+    double res;
+    for (const Point& p : midPoints) {
+        res += f(p[0], p[1]);
+    }
+
+    return res * square / 3;
+}
+
+Matrix getLocal(const Point &i,
+                const Point &j,
+                const Point &k,
+                const MathFunc &k_x,
+                const MathFunc &k_y)
+{
+    Matrix local = init(3, 3);
+
+    const auto square = getSquare(i, j, k);
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
-    double kx = 0.;
-    double ky = 0.;
-    for (auto &p: midPoints) {
-        kx += k_x(p[0], p[1]);
-        ky += k_y(p[0], p[1]);
-    }
+
     for (int row = 0; row < 3; row++) {
         for (int col = 0; col < 3; col++) {
-            local[row][col] = (b[row] * b[col] * kx + c[row] * c[col] * ky) / (12 * space);
+            local[row][col] =
+            integrate(i, j, k, [&](Coord x, Coord y) -> double {
+                return (
+                    b[row] * b[col] * k_x(x, y) +
+                    c[row] * c[col] * k_y(x, y)
+                ) / (
+                    4 * square * square
+                );
+            });
         }
     }
     return local;
@@ -42,12 +69,15 @@ Matrix getLocal(const Point &i,
 Matrix
 localToGlobal(const Matrix &local, const int &i, const int &j, const int &k, const int &width, const int &height) {
     Matrix global = init(width, height);
+
     global[i][i] = local[0][0];
     global[i][j] = local[0][1];
     global[i][k] = local[0][2];
+
     global[j][i] = local[1][0];
     global[j][j] = local[1][1];
     global[j][k] = local[1][2];
+
     global[k][i] = local[2][0];
     global[k][j] = local[2][1];
     global[k][k] = local[2][2];
@@ -86,22 +116,21 @@ Vector getLocalVector(const Point &i,
                       const Point &k,
                       const MathFunc &f) {
     Vector local(3);
-    std::vector <Point> midPoints = {(i + j) / 2, (j + k) / 2, (k + i) / 2};
     std::vector<double> b = {j[1] - k[1], k[1] - i[1], i[1] - j[1]};
     std::vector<double> c = {k[0] - j[0], i[0] - k[0], j[0] - i[0]};
     std::vector<double> a = {j[0] * k[1] - k[0] * j[1],
-                             k[0] * i[1] - k[1] * i[0],
+                             k[0] * i[1] - i[0] * k[1],
                              i[0] * j[1] - j[0] * i[1]};
 
-    std::vector<double> N = {0., 0., 0.};
-    for (auto &p: midPoints) {
-        for (int ind = 0; ind < 3; ind++) {
-            N[ind] +=(a[ind] + b[ind] * p[0] + c[ind] * p[1]) * f (p[0], p[1]);
-        }
-    }
+    const auto square = getSquare(i, j, k);
+
     for (int ind = 0; ind < 3; ind++) {
-        local[ind] = N[ind] / 6;
+        local[ind] = integrate(i, j, k, [&](Coord x, Coord y) -> double {
+            auto N = (a[ind] + b[ind] * x + c[ind] * y) / (2 * square);
+            return N * f(x, y);
+        });
     }
+
     return local;
 }
 
