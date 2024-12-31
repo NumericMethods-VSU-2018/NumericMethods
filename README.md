@@ -41,3 +41,12 @@ d/dx (k_x(x,y) du/dx) + d/dx (k_y(x,y) du/dy) = f(x,y)
 Диагонали "северо-запад - юго-восток". Добавляется граничное условие 3го
 рода + 1 человек
 
+Результат
+---------
+
+![](docs/images//test2.png)
+
+![](docs/images//test3.png)
+
+![](docs/images//test4.png)
+
