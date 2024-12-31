@@ -10,3 +10,4 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} PUBLIC common)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)

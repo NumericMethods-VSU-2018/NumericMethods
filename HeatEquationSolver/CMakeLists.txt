@@ -8,6 +8,7 @@ add_library(${PROJECT_NAME}
     include/heatequationsolver.h
 )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 find_package(OpenGL REQUIRED)

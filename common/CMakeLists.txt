@@ -9,3 +9,4 @@ add_library(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)

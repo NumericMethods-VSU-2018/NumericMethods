@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
 find_package(OpenGL REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui OpenGL REQUIRED)
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     ${OPENGL_LIBRARIES}

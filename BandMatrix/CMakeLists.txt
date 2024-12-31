@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME}
     src/ReorderMatrix.cpp
 )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_generic_lambdas)
 target_link_libraries(${PROJECT_NAME} PUBLIC common)
 

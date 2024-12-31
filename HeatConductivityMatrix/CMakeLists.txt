@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME}
     src/Point.cpp
 )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} PUBLIC common)
 
